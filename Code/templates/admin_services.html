@@ -1,0 +1,71 @@
+<div class="modal fade" id="serviceAddModal" tabindex="-1" aria-labelledby="serviceAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="serviceAddModalLabel">Add a new service</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form onsubmit="addService(event)">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="new_service_name" class="form-label">Service Name</label>
+                    <input type="text" class="form-control" id="new_service_name" placeholder="Service Name" required>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="new_service_category">Category</label>
+                    <select class="form-select" id="new_service_category" required>
+                      <option selected disabled>Choose Category</option>
+                      {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                <div class="mb-3">
+                    <label for="new_service_description" class="form-label">Description</label>
+                    <textarea class="form-control" id="new_service_description" rows="3" placeholder="Write a service description" required></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="new_service_price_desc">Base Price (₹)</span>
+                    <input type="number" class="form-control" id="new_service_price" placeholder="0000" aria-label="Base Price" aria-describedby="new_service_price_desc" required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="new_service_time_desc">Time Required (minutes)</span>
+                    <input type="number" class="form-control" id="new_service_time" placeholder="0000" aria-label="Time Required in minutez" aria-describedby="new_service_time_desc" required>
+                </div>
+                <div id="service-alert"></div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="add-service-button">Add Service</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="categoryAddModal" tabindex="-1" aria-labelledby="categoryAddModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="categoryAddModalLabel">Create a new service category</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form onsubmit="addCategory(event)">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="new_category_name" class="form-label">Category Name</label>
+                    <input type="text" class="form-control" id="new_category_name" placeholder="Category Name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="new_category_description" class="form-label">Description</label>
+                    <textarea class="form-control" id="new_category_description" rows="3" placeholder="Write a category description" required></textarea>
+                </div>
+                <div id="category-alert"></div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="add-category-button">Add Category</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>

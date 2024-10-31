@@ -1,0 +1,36 @@
+{% extends 'signin_register_base.html' %}
+{% block title%}Signin | HomeGenie{% endblock %}
+
+{% block main %}
+<main class="form-signin w-100 m-auto">
+<form onsubmit="handleSignin(event)">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <select name="signin_as" id="signin_as" class="form-select mb-2" required aria-label="Select login role" oninput="dismisAlert('#signin-alert')">
+        <option value="" disabled selected>Select a role</option>
+        <option value="admin">Admin</option>
+        <option value="customer">Customer</option>
+        <option value="professional">Professional</option>
+    </select>
+    <div class="form-floating">
+      <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" oninput="dismisAlert('#signin-alert')" required>
+      <label for="email">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" name="password" id="password" placeholder="Password" oninput="dismisAlert('#signin-alert')" required>
+      <label for="password">Password</label>
+    </div>
+
+    <div id="signin-alert"></div>
+    
+    <button class="btn btn-primary w-100 py-2" type="submit" id="signin-button">Sign in</button>
+
+  </form>
+  <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+    <a href="/register/customer" class="link-primary">Create Account?</a>
+    <a href="/register/professional" class="link-primary">Register as professional</a>
+  </div>
+</main>
+  {% endblock %}
+  {% block scripts %}
+    <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
+    {% endblock %}

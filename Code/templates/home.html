@@ -1,0 +1,46 @@
+<!-- templates/home.html -->
+{% extends "base.html" %}
+
+{% block title %}Home 
+
+{% if signin_as=="admin" %}
+    | Admin Panel
+{% elif signin_as=="customer" %}
+    | Customer Panel
+{% elif signin_as=="professional" %}
+    | Professional Panel
+{% endif %}
+
+| HomeGenie{% endblock %}
+
+{% block navbar_title %}
+HomeGenie 
+{% if signin_as=="admin" %}
+    | Admin
+{% elif signin_as=="customer" %}
+    | Customer
+{% elif signin_as=="professional" %}
+    | Professional
+{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% if signin_as=="admin" %}
+    {% include "admin_home.html" %}
+{% elif signin_as=="customer" %}
+    {% include "customer_home.html" %}
+{% elif signin_as=="professional" %}
+    {% include "professional_home.html" %}
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if signin_as=="admin" %}
+    <script src="{{ url_for('static', filename='js/admin_home.js') }}"></script>
+{% elif signin_as=="customer" %}
+    <script src="{{ url_for('static', filename='js/customer_home.js') }}"></script>
+{% elif signin_as=="professional" %}
+    <script src="{{ url_for('static', filename='js/professional_home.js') }}"></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+bin
+include
+lib
+lib64
+env
+venv
+**/__pycache__/
+**/*.env
+!example.env
+pyvenv.cfg
+*.sqlite3
+uploads/

@@ -1,0 +1,80 @@
+{% extends 'signin_register_base.html' %}
+{% block title%}Professional Signup | HomeGenie{% endblock %}
+
+{% block main %}
+<main class="w-100 m-auto" style="max-width:1240px; padding:1rem;">
+<form onsubmit="handleRegister(event,'professional')">
+    <h1 class="h3 mb-3 fw-normal text-center">Professional Signup</h1>
+    <div class="row g-2">
+      <div class="col-md">
+        <div class="form-floating mb-2">
+          <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" oninput="dismisAlert('#register-alert')" required>
+          <label for="email">Email address</label>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-floating mb-2">
+          <input type="password" class="form-control" id="password" placeholder="Password" name="password" oninput="dismisAlert('#register-alert')" required>
+          <label for="password">Password</label>
+        </div>
+      </div>
+    </div>
+    <div class="row g-2">
+      <div class="col-md">
+        <div class="form-floating mb-2">
+          <input type="text" class="form-control" id="full_name" placeholder="Full Name" name="full_name" oninput="dismisAlert('#register-alert')" required>
+          <label for="full_name">Full Name</label>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-floating mb-2">
+          <input type="tel" class="form-control" id="phone" placeholder="Phone No." name="phone" oninput="dismisAlert('#register-alert')" required>
+          <label for="phone">Phone No.</label>
+        </div>
+      </div>
+    </div>
+    <div class="row g-2">
+    <div class="col-md">
+      <div class="form-floating">
+      <select class="form-select mb-2" id="service" name="service" oninput="dismisAlert('#register-alert')" required>
+        <option selected disabled>Choose a service</option>
+        {% for service in services %}
+        <option value="{{service.id}}">{{service.name}}</option>
+        {% endfor %}
+      </select>
+      <label for="service">Which service you want to work for</label>
+    </div>
+    </div>
+    <div class="col-md">
+      <div class="form-floating mb-2">
+        <input type="number" class="form-control" id="experience" placeholder="Experience (years)" name="experience" oninput="dismisAlert('#register-alert')" required>
+        <label for="phone">Experience (years)</label>
+      </div>
+    </div>
+  </div>
+  <div class="input-group custom-file-button mb-2">
+    <label for="resume" class="input-group-text">Resume (pdf)</label>
+      <input type="file" accept="application/pdf" id="resume" class="form-control" name="resume" oninput="dismisAlert('#register-alert')" required>
+  </div>
+      <div class="form-floating mb-2">
+          <textarea class="form-control" placeholder="Please enter your address" id="address" style="height: 100px" name="address" oninput="dismisAlert('#register-alert')" required></textarea>
+          <label for="address">Address</label>
+        </div>
+    <div class="form-floating mb-2">
+        <input type="number" class="form-control" id="pincode" placeholder="Pincode" name="pincode" oninput="dismisAlert('#register-alert')" required>
+        <label for="pincode">Pincode</label>
+    </div>
+
+    <div id="register-alert"></div>
+    
+    <button class="btn btn-primary w-100 py-2" type="submit" id="register-button">Register</button>
+
+  </form>
+  <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+    <a href="/signin" class="link-primary">Signin</a>
+  </div>
+</main>
+  {% endblock %}
+  {% block scripts %}
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+    {% endblock %}

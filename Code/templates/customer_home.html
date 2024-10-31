@@ -1,0 +1,67 @@
+<main class="container">
+    <div class="p-5 text-center bg-body-tertiary rounded-3 mt-4" id="lookup-jumbotron">
+        <h1 class="text-body-emphasis" id="lookup-heading">Looking for?</h1>
+        <div class="d-flex justify-content-evenly gap-3 flex-wrap" id="lookup-categories">
+            {% for category in categories %}
+            <div class="card text-center mb-3" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">{{category.name}}</h5>
+                  <p class="card-text">{{category.description}}</p>
+                  <button type="button" class="btn btn-primary stretched-link" onclick="showServices(event,{{category.id}})">Show Packages</button>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+        <div id="lookup-alert"></div>
+        <section class="d-none" id="services">
+        <table class="table table-bordered table-striped d-none">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Base Price (₹)</th>
+                    <th scope="col">Time (minutes)</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end w-100 gap-3">
+            <button class="btn btn-success w-100" onclick="showCategories(event)">Show Categories</button>
+        </div>
+    </section>
+      </div>
+      <h1>Service Requests</h1>
+        <table class="table table-bordered table-striped" id="requests">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Base Price (₹)</th>
+                    <th scope="col">Time (minutes)</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for request in service_requests %}
+                <tr>
+                    <th scope="row">{{request.id}}</th>
+                    <td>{{request.service.name}}</td>
+                    <td>{{request.service.category.name}}</td>
+                    <td>{{request.service.price}}</td>
+                    <td>{{request.service.time_required_minutes}}</td>
+                    <td>
+                        <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
+                            <button class="btn btn-primary btn-sm" onclick="editRequest({{request.id}})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteRequest({{request.id}})">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</main>

@@ -1,0 +1,97 @@
+<div class="container my-3">
+    <h2>Service Categories</h2>
+    <table class="table table-bordered table-striped" id="categories">
+        <thead>
+            <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Category Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for category in categories %}
+            <tr>
+                <th scope="row">{{ category.id }}</th>
+                <td>{{ category.name }}</td>
+                <td>{{ category.description }}</td>
+                <td>
+                    <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
+                        <button class="btn btn-primary btn-sm" onclick="editService({{category.id}})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="seleteService({{category.id}})">Delete</button>
+                    </div>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <div class="d-flex justify-content-end w-100 gap-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryAddModal">New Category</button>
+        </div>
+        {% include "admin_services.html" %}
+        <h2>Services</h2>
+        <table class="table table-bordered table-striped" id="services">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Base Price (₹)</th>
+                    <th scope="col">Time (minutes)</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for service in services %}
+                <tr>
+                    <th scope="row">{{service.id}}</th>
+                    <td>{{service.name}}</td>
+                    <td>{{service.description}}</td>
+                    <td>{{service.price}}</td>
+                    <td>{{service.time_required_minutes}}</td>
+                    <td>{{service.category.name}}</td>
+                    <td>
+                        <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
+                            <button class="btn btn-primary btn-sm" onclick="editCategory({{service.id}})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteCategory({{service.id}})">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end w-100 gap-3">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#serviceAddModal">New Service</button>
+        </div>
+        <h2>Professionals</h2>
+        <table class="table table-bordered table-striped" id="professionals">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Experience (Years)</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for professional in professionals %}
+                <tr>
+                    <th scope="row"><a href="/professional/{{professional.phone}}" target="_blank">{{professional.id}}</a></th>
+                    <th>{{professional.email}}</th>
+                    <td>{{professional.name}}</td>
+                    <td>{{professional.experience}}</td>
+                    <td>{{professional.service.name}}</td>
+                    <td>
+                        <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
+                            <button class="btn btn-primary btn-sm" onclick="editCategory({{professional.email}})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteCategory({{professional.email}})">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>

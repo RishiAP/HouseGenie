@@ -38,7 +38,7 @@
             {% endif %}
             {% endblock %}
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler ms-auto me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -55,12 +55,20 @@
               </li>
               {% endif %}
             </ul>
-            {% if signed_in %}
-                <button class="btn btn-outline-danger" type="button" onclick="handleSignOut(event)" id="signout-button">Sign Out</button>
-            {% else %}
-                <a class="btn btn-success" href="/signin">Sign In</a>
-            {% endif %}
           </div>
+          {% if signed_in %}
+          <div class="dropdown">
+            <i class="bi bi-person-circle fs-2" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"></i>
+            <ul class="dropdown-menu dropdown-menu-end">
+              {% if signin_as!="admin" %}
+              <li><a class="dropdown-item" href="/profile">Profile</a></li>
+              {% endif %}
+              <li class="text-danger dropdown-item" role="button" onclick="handleSignOut(event)" id="signout-button">Sign Out</li>
+            </ul>
+          </div>
+          {% else %}
+              <a class="btn btn-success" href="/signin">Sign In</a>
+          {% endif %}
         </div>
       </nav>
 

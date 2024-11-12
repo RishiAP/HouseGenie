@@ -11,7 +11,9 @@ from models.ServiceRequest import ServiceRequest
 from models.Professional import Professional
 from api.service_request import GetRequests, GetSpecificRequest, CloseServiceRequest,BookService, AcceptRejectServiceRequest, AssignServiceRequest, ReviewServiceRequest
 from api.professional import ProfessionalAPI, ServiceProfessionals
-from helpers.auth_decorators import check_signin
+from api.profile import ProfileHandle
+from models.Customer import Customer
+from helpers.auth_decorators import check_signin, admin_required
 
 @app.route('/')
 @check_signin
@@ -44,15 +46,33 @@ def professional_register():
     return render_template('professional_register.html',services=services)
 
 @app.route('/professional/<int:id>')
-@check_signin
+@admin_required
 def professional(id,signed_in,signin_as,signed_email,signed_id):
     professional=Professional.query.filter_by(id=id).first()
     return render_template('professional.html',professional=professional,signed_in=signed_in,signin_as=signin_as,signed_email=signed_email), 404 if professional is None else 200
+
+@app.route('/customer/<int:id>')
+@admin_required
+def customer(id,signed_in,signin_as,signed_email,signed_id):
+    customer=Customer.query.filter_by(id=id).first()
+    return render_template('customer.html',customer=customer,signed_in=signed_in,signin_as=signin_as,signed_email=signed_email), 404 if professional is None else 200
 
 @app.route('/service_request/<int:id>')
 @check_signin
 def service_request(id,signed_in,signin_as,signed_email,signed_id):
     return render_template('service_request.html',signed_in=signed_in,signin_as=signin_as,signed_email=signed_email), 404 if service_request is None else 200
+
+@app.route('/profile')
+@check_signin
+def profile(signed_in,signin_as,signed_email,signed_id):
+    if not signed_in or signin_as=="admin":
+        return redirect('/')
+    elif signin_as=="customer":
+        customer=Customer.query.filter_by(id=signed_id).first()
+        return render_template('customer.html',signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,customer=customer)
+    elif signin_as=="professional":
+        professional=Professional.query.filter_by(id=signed_id).first()
+        return render_template('professional.html',signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,professional=professional)
 
 api.add_resource(Signin,'/api/signin')
 api.add_resource(Register,'/api/register')
@@ -69,6 +89,7 @@ api.add_resource(CloseServiceRequest,'/api/service_request/<int:id>/close')
 api.add_resource(ReviewServiceRequest,'/api/service_request/<int:id>/rate')
 api.add_resource(ProfessionalAPI,'/api/professional/<int:id>/approve')
 api.add_resource(ServiceProfessionals,'/api/service/<int:service_id>/professionals/<professionalType>')
+api.add_resource(ProfileHandle,'/api/edit_profile')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -26,60 +26,61 @@ HomeGenie | Professional
 </main>
 {% else %}
 <main class="w-100 m-auto" style="max-width:1240px; padding:1rem;">
-    <h1 class="h3 mb-3 fw-normal text-center">Professional Details</h1>
+    <h1 class="h3 mb-3 fw-normal text-center">
+        {% if signin_as=="admin" %}
+        Professional Details
+        {% else %}
+        Profile
+        {% endif %}
+    </h1>
     <form>
         <fieldset>
     <div class="row g-2">
         <div class="col-md">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="name" placeholder="Full Name" value="{{professional.name}}" readonly>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" value="{{professional.name}}" readonly required>
                 <label for="name">Full Name</label>
             </div>
         </div>
         <div class="col-md">
-            {% if signin_as=="admin" %}
             <div class="form-floating mb-2">
-                <input type="email" class="form-control" id="email" placeholder="" value="{{professional.email}}" readonly>
+                <input type="email" class="form-control" id="email" name="email" placeholder="" value="{{professional.email}}" readonly required>
                 <label for="email">Email</label>
             </div>
-            {% else %}
-            <div class="form-floating mb-2">
-                <input type="number" class="form-control" id="pincode" placeholder="" value="{{professional.pincode}}" readonly>
-                <label for="email">Pincode</label>
-            </div>
-            {% endif %}
         </div>
     </div>
     <div class="row g-2">
         <div class="col-md">
             <div class="form-floating mb-2">
-                <input type="tel" class="form-control" id="phone" placeholder="Phone No." value="{{professional.phone}}" readonly>
+                <input type="tel" class="form-control" id="phone" placeholder="Phone No." name="phone" value="{{professional.phone}}" readonly required>
                 <label for="phone">Phone No.</label>
             </div>
         </div>
         <div class="col-md">
             <div class="form-floating mb-2">
-                <input type="number" class="form-control" id="experience" placeholder="Experience (years)" value="{{professional.experience}}" readonly>
+                <input type="number" class="form-control" id="experience" placeholder="Experience (years)" name="experience" value="{{professional.experience}}" readonly required>
                 <label for="experience">Experience (years)</label>
             </div>
         </div>
     </div>
-    {% if signin_as=="admin" %}
+    <div class="form-floating mb-2 d-none">
+        <input type="password" class="form-control" id="password" placeholder="Password (Optional)" name="password" value="" >
+        <label for="service">Password (Optional)</label>
+    </div>
     <div class="form-floating mb-2">
-        <input type="number" class="form-control" id="pincode" placeholder="Pincode" value="{{professional.pincode}}" readonly>
+        <input type="number" class="form-control" id="pincode" placeholder="Pincode" name="pincode" value="{{professional.pincode}}" readonly required>
         <label for="service">Pincode</label>
     </div>
-    {% endif %}
     <div class="form-floating mb-2">
-        <textarea class="form-control" placeholder="Please enter your address" id="address" style="height: 100px" readonly>{{professional.address}}</textarea>
+        <textarea class="form-control" placeholder="Please enter your address" id="address" name="address" style="height: 100px" readonly required>{{professional.address}}</textarea>
         <label for="address">Address</label>
     </div>
     <div class="form-floating mb-2">
-        <input type="text" class="form-control" id="service" placeholder="Service" value="{{professional.service.name}}" readonly>
+        <input type="text" class="form-control" id="service" placeholder="Service" value="{{professional.service.name}}" readonly required>
         <label for="service">Service</label>
     </div>
     <div class="form-floating mb-2">
-        <input type="text" class="form-control" id="category" placeholder="Category" value="{{professional.service.category.name}}" readonly>
+        <input type="text" class="form-control" id="category" placeholder="Category" value="{{professional.service.category.name}}" readonly required>
         <label for="category">Category</label>
     </div>
     </fieldset>
@@ -93,6 +94,11 @@ HomeGenie | Professional
         {% else %}
         <button class="btn btn-outline-success" onclick="approveProfessional(event,{{professional.id}})">Approve</button>
         {% endif %}
+        {% else %}
+        <div class="d-flex gap-4 w-100 justify-content-center">
+        <button type="button" class="btn btn-secondary d-none cancel-button" onclick="cancelEditing(event)" >Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="handleProfileEdit(event)" >Edit Profile</button>
+        </div>
         {% endif %}
         
     </div>
@@ -104,5 +110,7 @@ HomeGenie | Professional
 {% block scripts %}
 {% if signin_as=="admin" %}
 <script src="/static/js/approve_professional.js"></script>
+{% else %}
+<script src="/static/js/edit_profile.js"></script>
 {% endif %}
 {% endblock %}

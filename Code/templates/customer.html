@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if customer!=none %}
+{{customer.name}} ({{customer.email}}) | Professional | HomeGenie
+{% else %}
+Customer Not Found | HomeGenie
+{% endif %}
+{% endblock %}
+
+{% block navbar_title %}
+{% if signin_as=="admin" %}
+HomeGenie | Admin
+{% elif signin_as=="customer" %}
+HomeGenie | Customer
+{% elif signin_as=="professional" %}
+HomeGenie | Professional
+{% endif %}
+{% endblock %}
+
+{% block main %}
+{% if customer==None %}
+<main class="w-100 m-auto" style="max-width:1240px; padding:1rem;">
+    <h1 class="h3 mb-3 fw-normal text-center">Customer Not Found</h1>
+    <p class="text-center">The customer you are looking for does not exist.</p>
+</main>
+{% else %}
+<main class="w-100 m-auto" style="max-width:1240px; padding:1rem;">
+    <h1 class="h3 mb-3 fw-normal text-center">
+        {% if signin_as=="admin" %}
+        Customer Details
+        {% else %}
+        Profile
+        {% endif %}
+    </h1>
+    <form>
+        <fieldset>
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" value="{{customer.name}}" readonly required>
+                <label for="name">Full Name</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-2">
+                <input type="email" class="form-control" id="email" name="email" placeholder="" value="{{customer.email}}" readonly required>
+                <label for="email">Email</label>
+            </div>
+        </div>
+    </div>
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="form-floating mb-2">
+                <input type="tel" class="form-control" id="phone" placeholder="Phone No." name="phone" value="{{customer.phone}}" readonly required>
+                <label for="phone">Phone No.</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating mb-2">
+                <input type="number" class="form-control" id="pincode" placeholder="Pincode" name="pincode" value="{{customer.pincode}}" readonly required>
+                <label for="service">Pincode</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-floating mb-2">
+        <textarea class="form-control" placeholder="Please enter your address" id="address" name="address" style="height: 100px" readonly required>{{customer.address}}</textarea>
+        <label for="address">Address</label>
+    </div>
+    <div class="form-floating mb-2 d-none">
+        <input type="password" class="form-control" id="password" placeholder="Password (Optional)" name="password" value="" >
+        <label for="service">Password (Optional)</label>
+    </div>
+    </fieldset>
+    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+    {% if signin_as=="admin" %}
+    
+    {% else %}
+    <div class="d-flex gap-4 w-100 justify-content-center">
+    <button type="button" class="btn btn-secondary d-none cancel-button" onclick="cancelEditing(event)" >Cancel</button>
+    <button type="button" class="btn btn-primary" onclick="handleProfileEdit(event)" >Edit Profile</button>
+    </div>
+    {% endif %}
+    </div>
+</form>
+</main>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if signin_as=="admin" %}
+
+{% else %}
+<script src="/static/js/edit_profile.js"></script>
+{% endif %}
+{% endblock %}

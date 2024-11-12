@@ -95,12 +95,13 @@ async function cancelEditing(event) {
     submit_button=form.querySelector('button[type="submit"]');
     submit_button.setAttribute("onclick","handleProfileEdit(event)");
     submit_button.setAttribute("type","button");
+    submit_button.innerHTML="Edit Profile";
     form.removeAttribute("onclick");
     service=form.querySelector("#service");
     if(service){
         service.disabled=false;
         form.querySelector("#category").disabled=false;
     }
-    event.target.querySelector(`input[name="password"]`).setAttribute('value','');
-    event.target.querySelector(`input[name="password"]`).parentElement.classList.add("d-none");
+    form.querySelector(`input[name="password"]`).setAttribute('value','');
+    form.querySelector(`input[name="password"]`).parentElement.classList.add("d-none");
 }

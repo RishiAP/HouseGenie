@@ -47,15 +47,15 @@ def professional_register():
 
 @app.route('/professional/<int:id>')
 @admin_required
-def professional(id,signed_in,signin_as,signed_email,signed_id):
+def professional(id):
     professional=Professional.query.filter_by(id=id).first()
-    return render_template('professional.html',professional=professional,signed_in=signed_in,signin_as=signin_as,signed_email=signed_email), 404 if professional is None else 200
+    return render_template('professional.html',professional=professional,signin_as="admin"), 404 if professional is None else 200
 
 @app.route('/customer/<int:id>')
 @admin_required
-def customer(id,signed_in,signin_as,signed_email,signed_id):
+def customer(id):
     customer=Customer.query.filter_by(id=id).first()
-    return render_template('customer.html',customer=customer,signed_in=signed_in,signin_as=signin_as,signed_email=signed_email), 404 if professional is None else 200
+    return render_template('customer.html',customer=customer,signin_as="admin"), 404 if customer is None else 200
 
 @app.route('/service_request/<int:id>')
 @check_signin

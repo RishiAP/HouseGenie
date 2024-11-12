@@ -37,12 +37,12 @@ class Register(Resource):
                 resume=request.files['resume']
                 if not resume or resume.filename == '':
                     return {"success": False, "message": "Resume file is required for professionals"}, 400
-                resume_filename = f"{args['email']}_resume.pdf"
-                resume_path = os.path.join(app.config['UPLOAD_FOLDER'], resume_filename)
-                resume.save(resume_path)
                 professional=Professional(email=args['email'],password=bcrypt.hashpw(args['password'].encode('utf-8'), bcrypt.gensalt()),name=args['full_name'],phone=args['phone'],address=args['address'],pincode=args['pincode'],service_id=args['service'],experience=args['experience'])
                 db.session.add(professional)
                 db.session.commit()
+                resume_filename = f"resume_{professional.id}_.pdf"
+                resume_path = os.path.join(app.config['UPLOAD_FOLDER'], resume_filename)
+                resume.save(resume_path)
         except Exception as e:
             app.logger.error(f"Error registering user: {str(e)}")
             return {"success": False, "message": str(e)}, 400

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block main %}
+<main class="container">
+    <h1 class="h3 mb-3 fw-normal text-center d-none mt-3" id="request_error"></h1>
+    <div id="request_info" class="d-none">
+    <h1 class="h3 mb-3 fw-normal text-center">Request ID : <span id="request_id"></span></h1>
+    <div class="d-flex gap-2 flex-column" id="service_info">
+        <div class="card text-center" style="max-width:640px; margin:auto;">
+            <div class="card-header" id="service_category" ></div>
+            <div class="card-body">
+              <h5 class="card-title" id="service_name">Special title treatment</h5>
+              <p class="card-text" id="service_desc" >With supporting text below as a natural lead-in to additional content.</p>
+              <div class="d-flex justify-content-evenly gap-3 flex-wrap">
+                <span><strong>Price : </strong><span id="service_price" ></span></span>
+                <span><strong>Time : </strong><span id="service_time" ></span></span>
+              </div>
+            </div>
+          </div>
+          <h2 class="mt-4 fw-normal fs-4 text-center">Request Status : <span id="service_status"></span></h2>
+        <div class="d-flex gap-4 flex-wrap justify-content-evenly" id="service_details">
+            <div class="card d-none" id="customer">
+                <div class="card-header">Customer</div>
+                <div class="card-body">
+                    <p class="card-text mb-1"><strong>Requested on : </strong><span id="requested_date" ></span></p>
+                    <p class="card-text"><strong>Expected on : </strong><span id="expected_date" ></span></p>
+                  <blockquote class="blockquote mb-0">
+                    <div class="d-flex rating"></div>
+                    <p class="small review"></p>
+                    <footer class="blockquote-footer d-none" id="customer_name"></footer>
+                  </blockquote>
+                </div>
+              </div>
+              <div class="card d-none" id="professional">
+                <div class="card-header">Professional</div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Completed on : </strong><span id="completed_on" ></span></p>
+                  <blockquote class="blockquote mb-0">
+                    <div class="d-flex rating"></div>
+                    <p class="small review"></p>
+                    <footer class="blockquote-footer d-none" id="professional_name"></footer>
+                  </blockquote>
+                </div>
+              </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/service_request.js') }}"></script>
+{% endblock %}

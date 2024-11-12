@@ -1,6 +1,6 @@
 function handleSignin(event){
     event.preventDefault();
-    dismisAlert('#signin-alert');
+    dismissAlert('#signin-alert');
     addLoader("#signin-button","Signing in...");
     document.querySelector("#signin-button").disabled=true;
     const email = document.getElementById('email').value;

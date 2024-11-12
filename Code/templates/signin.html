@@ -5,18 +5,18 @@
 <main class="form-signin w-100 m-auto">
 <form onsubmit="handleSignin(event)">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-    <select name="signin_as" id="signin_as" class="form-select mb-2" required aria-label="Select login role" oninput="dismisAlert('#signin-alert')">
+    <select name="signin_as" id="signin_as" class="form-select mb-2" required aria-label="Select login role" oninput="dismissAlert('#signin-alert')">
         <option value="" disabled selected>Select a role</option>
         <option value="admin">Admin</option>
         <option value="customer">Customer</option>
         <option value="professional">Professional</option>
     </select>
     <div class="form-floating">
-      <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" oninput="dismisAlert('#signin-alert')" required>
+      <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" oninput="dismissAlert('#signin-alert')" required>
       <label for="email">Email address</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" name="password" id="password" placeholder="Password" oninput="dismisAlert('#signin-alert')" required>
+      <input type="password" class="form-control" name="password" id="password" placeholder="Password" oninput="dismissAlert('#signin-alert')" required>
       <label for="password">Password</label>
     </div>
 

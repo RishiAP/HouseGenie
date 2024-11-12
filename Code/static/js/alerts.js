@@ -3,6 +3,6 @@ function showAlert(container,type,message){
 </div>`;
 }
 
-function dismisAlert(container){
+function dismissAlert(container){
     document.querySelector(container).innerHTML='';
 }

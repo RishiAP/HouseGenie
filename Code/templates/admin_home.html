@@ -1,3 +1,28 @@
+{% block style %}
+<style>
+.professional-label {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  /* Hover effect */
+  .professional-label:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+  }
+  
+  /* Selected state */
+  .professional-assign-div input[type="radio"]:checked + .professional-label {
+    background-color: #e0f3ff;
+    border-color: #007bff;
+  }
+</style>
+{% endblock %}  
 <div class="container my-3">
     <h2>Service Categories</h2>
     <table class="table table-bordered table-striped" id="categories">
@@ -64,7 +89,12 @@
         <div class="d-flex justify-content-end w-100 gap-3">
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#serviceAddModal">New Service</button>
         </div>
-        <h2>Professionals</h2>
+        <h2>New Professionals</h2>
+        {% if professionals|length == 0 %}
+        <div class="alert alert-info" role="alert">
+            No new professionals to show
+        </div>
+        {% else %}
         <table class="table table-bordered table-striped" id="professionals">
             <thead>
                 <tr>
@@ -79,19 +109,60 @@
             <tbody class="table-group-divider">
                 {% for professional in professionals %}
                 <tr>
-                    <th scope="row"><a href="/professional/{{professional.phone}}" target="_blank">{{professional.id}}</a></th>
+                    <th scope="row">{{professional.id}}</th>
                     <th>{{professional.email}}</th>
                     <td>{{professional.name}}</td>
                     <td>{{professional.experience}}</td>
                     <td>{{professional.service.name}}</td>
                     <td>
                         <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
-                            <button class="btn btn-primary btn-sm" onclick="editCategory({{professional.email}})">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteCategory({{professional.email}})">Delete</button>
+                            <a href="/professional/{{professional.id}}" target="_blank" class="btn btn-info btn-sm">View Profile</a>
                         </div>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% endif %}
+        <h2>Service Requests</h2>
+        <div id="request-table-alert"></div>
+        <table class="table table-bordered table-striped d-none" id="requests">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Customer Address</th>
+                    <th scope="col">Professional Name</th>
+                    <th scope="col">Requested on</th>
+                    <th scope="col">Expected on</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider"></tbody>
+        </table>
+        <div class="modal fade" id="assignProfessionalModal" tabindex="-1" aria-labelledby="assignProfessionalModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="assignProfessionalModalLabel">Assign a professional</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    <div class="modal-body">
+                        <div class="service_request_details">
+                            
+                        </div>
+                        <div class="radios d-flex flex-column gap-2"></div>
+                        <div id="assign-professional-alert" class="mt-2"></div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Assign</button>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
 </div>

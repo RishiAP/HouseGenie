@@ -13,17 +13,6 @@
 
 | HomeGenie{% endblock %}
 
-{% block navbar_title %}
-HomeGenie 
-{% if signin_as=="admin" %}
-    | Admin
-{% elif signin_as=="customer" %}
-    | Customer
-{% elif signin_as=="professional" %}
-    | Professional
-{% endif %}
-{% endblock %}
-
 {% block main %}
 
 {% if signin_as=="admin" %}
@@ -40,6 +29,7 @@ HomeGenie
     <script src="{{ url_for('static', filename='js/admin_home.js') }}"></script>
 {% elif signin_as=="customer" %}
     <script src="{{ url_for('static', filename='js/customer_home.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/rating.js') }}"></script>
 {% elif signin_as=="professional" %}
     <script src="{{ url_for('static', filename='js/professional_home.js') }}"></script>
 {% endif %}

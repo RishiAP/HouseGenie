@@ -34,34 +34,27 @@
         </div>
     </section>
       </div>
-      <h1>Service Requests</h1>
-        <table class="table table-bordered table-striped" id="requests">
+      <h1 class="mt-5">Service History</h1>
+      <div id="request-table-alert"></div>
+        <table class="table table-bordered table-striped d-none" id="requests">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Service Name</th>
-                    <th scope="col">Category</th>
                     <th scope="col">Base Price (₹)</th>
                     <th scope="col">Time (minutes)</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Requested on</th>
+                    <th scope="col">Expected on</th>
+                    <th scope="col">Professional Name</th>
+                    <th scope="col">Phone No.</th>
+                    <th scope="col">Completed on</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                {% for request in service_requests %}
-                <tr>
-                    <th scope="row">{{request.id}}</th>
-                    <td>{{request.service.name}}</td>
-                    <td>{{request.service.category.name}}</td>
-                    <td>{{request.service.price}}</td>
-                    <td>{{request.service.time_required_minutes}}</td>
-                    <td>
-                        <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
-                            <button class="btn btn-primary btn-sm" onclick="editRequest({{request.id}})">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteRequest({{request.id}})">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
+                
             </tbody>
         </table>
 </main>
+{% include "review_modal.html" %}
+{% include "book_service_modal.html" %}

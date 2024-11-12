@@ -84,14 +84,14 @@ HomeGenie | Professional
     </div>
     </fieldset>
     {% if signin_as=="admin" %}
-    <a href="/static/uploads/resumes/{{professional.email}}_resume.pdf" class="btn btn-primary w-100" target="_blank">View Resume</a>
+    <a href="/static/uploads/resumes/resume_{{professional.id}}_.pdf" class="btn btn-primary w-100" target="_blank">View Resume</a>
     {% endif %}
     <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
         {% if signin_as=="admin" %}
         {% if professional.approved %}
         <button class="btn btn-danger" disabled>Approved</button>
         {% else %}
-        <button class="btn btn-success" onclick="approveProfessional('{{professional.email}}')">Approve</button>
+        <button class="btn btn-outline-success" onclick="approveProfessional(event,{{professional.id}})">Approve</button>
         {% endif %}
         {% endif %}
         
@@ -102,4 +102,7 @@ HomeGenie | Professional
 {% endblock %}
 
 {% block scripts %}
+{% if signin_as=="admin" %}
+<script src="/static/js/approve_professional.js"></script>
+{% endif %}
 {% endblock %}

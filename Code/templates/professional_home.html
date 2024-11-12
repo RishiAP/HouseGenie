@@ -1,7 +1,52 @@
-<div class="container">
+<main class="container">
 {% if professional.approved==False %}
 <div class="alert alert-warning mt-3" role="alert">
     <strong>Not Approved!</strong> Your account is not approved by the admin yet. Please wait for the approval.
 </div>
+{% else %}
+    <h1 class="mt-2">Services Assigned</h1>
+    {% include "all_glow_spinners.html" %}
+    <div id="requests-alert"></div>
+    <table class="table table-bordered table-striped d-none" id="requests">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Phone No.</th>
+                <th scope="col">Location</th>
+                <th scope="col">Requested on</th>
+                <th scope="col">Expected on</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            
+        </tbody>
+    </table>
+    <h1 class="mt-2">Services History</h1>
+    <div id="history-alert"></div>
+    <table class="table table-bordered table-striped d-none" id="history">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Phone No.</th>
+                <th scope="col">Location</th>
+                <th scope="col">Requested on</th>
+                <th scope="col">Expected on</th>
+                <th scope="col">Completed on</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            
+        </tbody>
+    </table>
 {% endif %}
-</div>
+    {% include "review_modal.html" %}
+</main>
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/rating.js') }}"></script>
+{% endblock %}

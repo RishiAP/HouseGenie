@@ -4,11 +4,20 @@ from helpers.auth_decorators import admin_required
 from models.Service import Service,ServiceCategory
 from setup import db
 
+class SpecificService(Resource):
+    def get(self,id):
+        service=Service.query.filter_by(id=id).first()
+        if service:
+            return {'message':'Service page','service':service.as_dict()},200
+        else:
+            return {'message':'Service not found'},404
+
 class Services(Resource):
     def get(self,category):
         services=Service.query.filter_by(category_id=category).all()
         category=ServiceCategory.query.filter_by(id=category).first()
         return {'message':'Service page',"services":[service.as_dict() for service in services],"category":category.as_dict()},200
+
     @admin_required
     def post(self):
         if request.is_json:

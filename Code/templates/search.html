@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+Search | HomeGenie
+{% endblock %}
+
+{% block main %}
+<main class="container" data-signin-as="{{signin_as}}">
+    <h1 class="h3 my-3 fw-normal text-center">Search</h1>
+    <form id="search_form" class="d-flex gap-3" onsubmit="handleSearch(event)">
+        <div class="input-group">
+            <label class="input-group-text" for="{% if signin_as=="admin"%}search_category{% else %}search_option{% endif %}">Search by</label>
+            <select class="form-select {% if signin_as!="admin"%}d-none{% endif %}" id="search_category" name="search_category" oninput="handleCategoryInput(event)" required>
+              <option {% if signin_as=="admin"%}selected{% endif %} disabled>Choose Category</option>
+              <option {% if signin_as!="admin"%}selected{% endif %} value="service_request">Service Request</option>
+              <option value="professional">Professional</option>
+              <option value="customer">Customer</option>
+            </select>
+            <select class="form-select" id="search_option" name="search_option" oninput="handleOptionInput(event)" {% if signin_as=="admin"%}disabled{% endif %} required>
+              <option selected disabled>Choose Option</option>
+              {% if signin_as=="customer"%}
+              <option value="pincode">Services in pincode</option>
+              {% endif %}
+              {% for key,value in options.items() %}
+              {% if key=="service" and signin_as=="professional" %}
+              {% else %}
+              <option value="{{key}}">{{value}}</option>
+              {% endif %}
+              {% endfor %}
+            </select>
+            <input type="text" class="form-control" id="search_query" name="search_query" placeholder="Search Query" disabled required>
+          </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <div id="search_results">
+        <h2 class="h3 mb-3 fw-normal text-center mt-4">Search Results</h2>
+        <div class="list-group gap-2" id="search_results_list">
+        </div>
+    </div>
+</main>
+{% if signin_as=="customer" %}
+{% include "book_service_modal.html" %}
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+{% if signin_as=="customer" %}
+    <script src="{{ url_for('static', filename='js/customer_home.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/book_while_search.js') }}"></script>
+{% elif signin_as=="professional" %}
+    <script src="{{ url_for('static', filename='js/professional_home.js') }}"></script>
+{% endif %}
+{% if signin_as=="customer" or signin_as=="professional" %}
+    <script src="{{ url_for('static', filename='js/rating.js') }}"></script>
+{% endif %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}

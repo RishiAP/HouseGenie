@@ -23,6 +23,7 @@ class Customer(db.Model):
     
     def as_private_dict(self):
         return {
+            'id':self.id,
             'email':self.email,
             'name':self.name,
             'address':self.address,

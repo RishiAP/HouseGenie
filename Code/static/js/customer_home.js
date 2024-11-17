@@ -267,7 +267,19 @@ async function closeRequest(event,id){
         if(response.status==201){
             event.target.innerHTML='Rate it';
             event.target.setAttribute('onclick',`openRateRequestModal(event,${id},true)`);
-            event.target.parentElement.parentElement.parentElement.querySelectorAll("td")[7].innerHTML=formatDateTime(res.date_of_completion);
+            completed_on_index=0;
+            if(res.date_of_completion!="Pending"){
+                theads=event.target.parentElement.parentElement.parentElement.parentElement.parentElement.querySelectorAll("thead th");
+                for(let i=0;i<theads.length;i++){
+                    if(theads[i].innerHTML=="Completed on"){
+                        break;
+                    }
+                    completed_on_index++;
+                }
+                if(completed_on_index<theads.length){
+                    event.target.parentElement.parentElement.querySelectorAll("td")[completed_on_index-1].innerHTML=formatDateTime(res.date_of_completion);
+                }
+            }
             event.target.classList.remove('btn-primary');
             event.target.classList.add('btn-warning');
             openRateRequestModal(event,id);

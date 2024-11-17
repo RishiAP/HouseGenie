@@ -19,6 +19,34 @@
       .rating .bi-star-fill,.rating .bi-star{
         font-size: 0.875em;
       }
+      .avg-rating-bg,.avg-rating-with-no {
+        min-height:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .avg-rating-bg{
+        color: gold;
+      }
+      .avg-rating {
+        font-size: 24px; /* icon size */
+        display: grid;
+        grid-template: "full" 1fr / 1fr;
+      
+        &::before {
+          grid-area: full;
+          width: calc((var(--rating, 0) / 5) * 100%);
+          overflow: hidden;
+          white-space: nowrap;
+          content: "★★★★★";
+        }
+      
+        &::after {
+          grid-area: full;
+          white-space: nowrap;
+          content: "☆☆☆☆☆";
+        }
+      }
     </style>
     {% block style %}
     {% endblock %}
@@ -44,14 +72,14 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
+                <a class="nav-link {% if page_type=="home" %}active{% endif %}" aria-current="page" href="/">Home</a>
               </li>
               {% if signed_in %}
               <li class="nav-item">
-                <a class="nav-link" href="/">Search</a>
+                <a class="nav-link {% if page_type=="search" %}active{% endif %}" href="/search">Search</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/">Summary</a>
+                <a class="nav-link {% if page_type=="summary" %}active{% endif %}" href="/summary">Summary</a>
               </li>
               {% endif %}
             </ul>

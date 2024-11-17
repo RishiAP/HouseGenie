@@ -12,8 +12,10 @@ from models.Professional import Professional
 from api.service_request import GetRequests, GetSpecificRequest, CloseServiceRequest,BookService, AcceptRejectServiceRequest, AssignServiceRequest, ReviewServiceRequest
 from api.professional import ProfessionalAPI, ServiceProfessionals
 from api.profile import ProfileHandle
+from api.search import Search
 from models.Customer import Customer
 from helpers.auth_decorators import check_signin, admin_required
+from helpers.commons import searchTypes
 
 @app.route('/')
 @check_signin
@@ -22,15 +24,15 @@ def home(signed_in,signin_as,signed_email,signed_id):
         categories=ServiceCategory.query.all()
         services=Service.query.all()
         professionals=Professional.query.filter_by(approved=False).all()
-        return render_template('home.html',signed_in=signed_in,signin_as=signin_as,categories=categories,services=services,professionals=professionals)
+        return render_template('home.html',page_type="home",signed_in=signed_in,signin_as=signin_as,categories=categories,services=services,professionals=professionals)
     elif signin_as=="customer":
         categories=ServiceCategory.query.all()
-        return render_template('home.html',signed_in=signed_in,signin_as=signin_as,categories=categories)
+        return render_template('home.html',page_type="home",signed_in=signed_in,signin_as=signin_as,categories=categories)
     elif signin_as=="professional":
         professional=Professional.query.filter_by(email=signed_email).first()
-        return render_template('home.html',signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,professional=professional)
+        return render_template('home.html',page_type="home",signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,professional=professional)
     else:
-        return render_template('home.html',signed_in=signed_in,signin_as=signin_as)
+        return render_template('home.html',page_type="home",signed_in=signed_in,signin_as=signin_as)
 
 @app.route('/signin')
 def admin_login():
@@ -49,13 +51,13 @@ def professional_register():
 @admin_required
 def professional(id):
     professional=Professional.query.filter_by(id=id).first()
-    return render_template('professional.html',professional=professional,signin_as="admin"), 404 if professional is None else 200
+    return render_template('professional.html',professional=professional,signed_in=True,signin_as="admin"), 404 if professional is None else 200
 
 @app.route('/customer/<int:id>')
 @admin_required
 def customer(id):
     customer=Customer.query.filter_by(id=id).first()
-    return render_template('customer.html',customer=customer,signin_as="admin"), 404 if customer is None else 200
+    return render_template('customer.html',customer=customer,signed_in=True,signin_as="admin"), 404 if customer is None else 200
 
 @app.route('/service_request/<int:id>')
 @check_signin
@@ -73,6 +75,13 @@ def profile(signed_in,signin_as,signed_email,signed_id):
     elif signin_as=="professional":
         professional=Professional.query.filter_by(id=signed_id).first()
         return render_template('professional.html',signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,professional=professional)
+    
+@app.route("/search")
+@check_signin
+def search_page(signed_in,signin_as,signed_email,signed_id):
+    if not signed_in:
+        return redirect('/')
+    return render_template("search.html",page_type="search",signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,options={} if signin_as=="admin" else searchTypes["service_request"])
 
 api.add_resource(Signin,'/api/signin')
 api.add_resource(Register,'/api/register')
@@ -90,6 +99,7 @@ api.add_resource(ReviewServiceRequest,'/api/service_request/<int:id>/rate')
 api.add_resource(ProfessionalAPI,'/api/professional/<int:id>/approve')
 api.add_resource(ServiceProfessionals,'/api/service/<int:service_id>/professionals/<professionalType>')
 api.add_resource(ProfileHandle,'/api/edit_profile')
+api.add_resource(Search,'/api/search')
 
 if __name__ == '__main__':
     app.run(debug=True)

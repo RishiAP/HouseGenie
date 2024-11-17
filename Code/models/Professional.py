@@ -30,6 +30,7 @@ class Professional(db.Model):
             'approved':self.approved,
             'pincode':self.pincode,
             'created_on':self.created_on.isoformat(timespec='milliseconds') + 'Z',
+            'service':self.service.as_dict()
         }
     
     def as_public_dict(self):
@@ -40,4 +41,5 @@ class Professional(db.Model):
             'phone':self.phone,
             'experience':self.experience,
             'pincode':self.pincode,
+            'service':self.service.as_dict()
         }

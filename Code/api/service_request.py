@@ -203,7 +203,7 @@ class CloseServiceRequest(Resource):
                 if service_request.date_of_completion is not None or service_request.date_of_service < date.today():
                     service_request.service_status="Closed"
                     db.session.commit()
-                    return {'message':'Service request closed','date_of_completion':service_request.date_of_completion.isoformat(timespec='milliseconds') + 'Z'},201
+                    return {'message':'Service request closed','date_of_completion':"Pending" if service_request.date_of_service < date.today() else service_request.date_of_completion.isoformat(timespec='milliseconds') + 'Z'},201
                 else:
                     raise LogicalException('Service requests can only be closed after the completion of the service or once the scheduled date of service has passed',400)
             elif signin_as=="professional":

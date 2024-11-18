@@ -35,3 +35,12 @@ function getStars(rating){
     }
     return stars;
 }
+
+function getOnlyFilledStars(rating){
+    rating=parseInt(rating);
+    stars='';
+    for(let i=0;i<rating;i++){
+        stars+='<i class="bi bi-star-fill"></i>';
+    }
+    return stars;
+}

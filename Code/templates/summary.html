@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+Summary | HomeGenie
+{% endblock %}
+
+{% block style %}
+<style>
+    #bar-chart{
+        width: 768px !important;
+        height: auto !important;
+        max-height:400px;
+      }
+      main{
+        margin-top:3rem;
+    }
+    @media (max-width: 1200px) {
+        main{
+            flex-direction: column;
+            margin-top:0;
+        }
+        #donut-chart {
+            width: 100% !important;
+        }
+        #bar-chart {
+            width: 100% !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<h1 class="h3 my-3 fw-normal text-center">Summary</h1>
+<main class="container-fluid d-flex gap-5 justify-content-center h-100 align-items-center p-2 flex-wrap" data-signin-as="{{signin_as}}" style="min-height:600px;">
+    <div id="donut-chart" class="d-none" style="width:40%"></div>
+    <div class="card d-none" id="bar-chart">
+        <div class="card-body">
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/summary.js') }}"></script>
+{% endblock %}

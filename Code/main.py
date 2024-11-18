@@ -13,6 +13,7 @@ from api.service_request import GetRequests, GetSpecificRequest, CloseServiceReq
 from api.professional import ProfessionalAPI, ServiceProfessionals
 from api.profile import ProfileHandle
 from api.search import Search
+from api.summary import Summary
 from models.Customer import Customer
 from helpers.auth_decorators import check_signin, admin_required
 from helpers.commons import searchTypes
@@ -83,6 +84,13 @@ def search_page(signed_in,signin_as,signed_email,signed_id):
         return redirect('/')
     return render_template("search.html",page_type="search",signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,options={} if signin_as=="admin" else searchTypes["service_request"])
 
+@app.route("/summary")
+@check_signin
+def summary_page(signed_in,signin_as,signed_email,signed_id):
+    if not signed_in:
+        return redirect('/')
+    return render_template("summary.html",page_type="summary",signed_in=signed_in,signin_as=signin_as,signed_email=signed_email)
+
 api.add_resource(Signin,'/api/signin')
 api.add_resource(Register,'/api/register')
 api.add_resource(SignOut,'/api/signout')
@@ -100,6 +108,7 @@ api.add_resource(ProfessionalAPI,'/api/professional/<int:id>/approve')
 api.add_resource(ServiceProfessionals,'/api/service/<int:service_id>/professionals/<professionalType>')
 api.add_resource(ProfileHandle,'/api/edit_profile')
 api.add_resource(Search,'/api/search')
+api.add_resource(Summary,'/api/summary')
 
 if __name__ == '__main__':
     app.run(debug=True)

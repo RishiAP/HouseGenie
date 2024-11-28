@@ -12,6 +12,7 @@ class Professional(db.Model):
     phone=db.Column(db.String(20),nullable=False)
     experience=db.Column(db.Integer,nullable=False)
     approved=db.Column(db.Boolean,nullable=False,default=False)
+    is_banned=db.Column(db.Boolean,nullable=False,default=False)
     created_on=db.Column(db.DateTime,nullable=False,default=db.func.current_timestamp())
     service_id=db.Column(db.Integer,db.ForeignKey('services.id'),nullable=False)
     service_request=db.relationship('ServiceRequest',backref='professional',lazy=True)

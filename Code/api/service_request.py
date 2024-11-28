@@ -10,7 +10,7 @@ from setup import db
 
 class GetRequests(Resource):
     @check_signin
-    def get(self,signin_as,signed_in,signed_email,signed_id):
+    def get(self,signin_as,signed_in,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'Please sign in'},401
         if signin_as=="admin":
@@ -37,9 +37,11 @@ class LogicalException(Exception):
 
 class BookService(Resource):
     @check_signin
-    def post(self,id,signin_as,signed_in,signed_email,signed_id):
+    def post(self,id,signin_as,signed_in,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'Please sign in'},401
+        if is_banned:
+            return {'message':'You have been banned and can no longer book services.'},403
         if request.is_json:
             data=request.get_json()
             try:
@@ -68,7 +70,7 @@ class BookService(Resource):
             return {'message':'Only customers can make service requests'},403
         
     @check_signin
-    def put(self,id,signin_as,signed_in,signed_email,signed_id):
+    def put(self,id,signin_as,signed_in,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'Please sign in'},401
         if request.is_json:
@@ -109,7 +111,7 @@ class BookService(Resource):
         
 class GetSpecificRequest(Resource):
     @check_signin
-    def get(self,id,signin_as,signed_in,signed_email,signed_id):
+    def get(self,id,signin_as,signed_in,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'Please sign in'},401
         try:
@@ -132,7 +134,7 @@ class GetSpecificRequest(Resource):
 
 class AcceptRejectServiceRequest(Resource):
     @check_signin
-    def put(self,id,reqType,signin_as,signed_in,signed_email,signed_id):
+    def put(self,id,reqType,signin_as,signed_in,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'Please sign in'},401
         if signin_as!="professional":
@@ -168,6 +170,8 @@ class AssignServiceRequest(Resource):
             professional=Professional.query.filter_by(id=professional_id).first()
             if not professional.approved:
                 return {"message":"Professional isn't approved yet"},403
+            if professional.is_banned:
+                return {"message":"Professional is banned. Cannot assign service request"},403
             service_request=ServiceRequest.query.filter_by(id=service_request_id).with_for_update().first()
             if service_request is None:
                 raise LogicalException("Service request not found",404)
@@ -186,7 +190,7 @@ class AssignServiceRequest(Resource):
         
 class CloseServiceRequest(Resource):
     @check_signin
-    def put(self,id,signin_as,signed_in,signed_email,signed_id):
+    def put(self,id,signin_as,signed_in,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'Please sign in'},401
         if signin_as=="admin":
@@ -223,7 +227,7 @@ class CloseServiceRequest(Resource):
         
 class ReviewServiceRequest(Resource):
     @check_signin
-    def post(self,id,signin_as,signed_in,signed_email,signed_id):
+    def post(self,id,signin_as,signed_in,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'Please sign in'},401
         if signin_as=="admin":

@@ -1,6 +1,7 @@
-function approveProfessional(event, id) {
+async function approveProfessional(event, id) {
     addLoader(event.target, 'Approving...');
     event.target.disabled = true;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     fetch(`/api/professional/${id}/approve`, {
         method: 'PUT',
         headers: {

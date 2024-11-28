@@ -11,7 +11,7 @@ Professional Not Found | HomeGenie
 {% block navbar_title %}
 {% if signin_as=="admin" %}
 HomeGenie | Admin
-{% elif signin_as=="customer" %}
+{% elif signin_as=="professional" %}
 HomeGenie | Customer
 {% elif signin_as=="professional" %}
 HomeGenie | Professional
@@ -33,6 +33,12 @@ HomeGenie | Professional
         Profile
         {% endif %}
     </h1>
+    <h2 class="h4 fw-normal text-center mb-4">
+        <div class="d-flex gap-2 align-items-center justify-content-center">
+            <span class="fs-5">Average Rating :</span>
+        <div class="avg-rating-with-no gap-2 fs-6"><div class="avg-rating-bg"><div class="avg-rating fs-3" style="--rating: {{average_rating}}" aria-label="Rating: {{average_rating}} out of 5" ></div></div>{{average_rating}}</div>
+        </div>
+    </h2>
     <form>
         <fieldset>
     <div class="row g-2">
@@ -86,6 +92,7 @@ HomeGenie | Professional
     </fieldset>
     {% if signin_as=="admin" %}
     <a href="/static/uploads/resumes/resume_{{professional.id}}_.pdf" class="btn btn-primary w-100" target="_blank">View Resume</a>
+    <button type="button" class="m-auto mt-4 d-flex justify-content-center align-items-center gap-2 btn btn-lg btn-{% if professional.is_banned %}success{% else %}danger{% endif %}" onclick="{% if professional.is_banned %}unbanUser{% else %}banUser{% endif %}(event,'professional',{{professional.id}})" ><i class="bi bi-person-{% if professional.is_banned %}check{% else %}slash{% endif %} fs-4"></i>{% if professional.is_banned %}Unban Professional{% else %}Ban Professional{% endif %}</button>
     {% endif %}
     <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
         {% if signin_as=="admin" %}
@@ -103,12 +110,18 @@ HomeGenie | Professional
         
     </div>
 </form>
+<div id="service_history" class="d-none">
+    <h2 class="h3 my-3 fw-normal text-center">Service History</h2>
+    <div class="history_table_div"></div>
+</div>
 </main>
 {% endif %}
 {% endblock %}
 
 {% block scripts %}
 {% if signin_as=="admin" %}
+<script src="/static/js/ban_unban_user.js"></script>
+<script src="/static/js/profile_service_requests.js"></script>
 <script src="/static/js/approve_professional.js"></script>
 {% else %}
 <script src="/static/js/edit_profile.js"></script>

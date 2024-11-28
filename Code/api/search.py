@@ -52,7 +52,7 @@ def get_customers_with_avg_rating_between(lower_bound: float, upper_bound: float
 
 class Search(Resource):
     @check_signin
-    def get(self,signed_in,signin_as,signed_email,signed_id):
+    def get(self,signed_in,signin_as,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'You are not signed in'},401
         keys=set(request.args.keys())

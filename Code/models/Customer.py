@@ -10,6 +10,7 @@ class Customer(db.Model):
     address=db.Column(db.String(255),nullable=False)
     pincode=db.Column(db.Integer,nullable=False,index=True)
     phone=db.Column(db.String(20),nullable=False,unique=True)
+    is_banned=db.Column(db.Boolean,nullable=False,default=False)
     created_on=db.Column(db.DateTime,nullable=False,default=db.func.current_timestamp())
     service_request=db.relationship('ServiceRequest',backref='customer',lazy=True)
 

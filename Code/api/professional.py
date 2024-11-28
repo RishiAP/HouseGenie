@@ -23,7 +23,7 @@ class ServiceProfessionals(Resource):
     @admin_required
     def get(self,service_id,professionalType):
         if professionalType=="approved":
-            professionals=Professional.query.filter_by(service_id=service_id,approved=True).all()
+            professionals=Professional.query.filter_by(service_id=service_id,approved=True,is_banned=False).all()
         else:
             professionals=Professional.query.filter_by(service_id=service_id).all()
         return {"professionals":[professional.as_private_dict() for professional in professionals]}

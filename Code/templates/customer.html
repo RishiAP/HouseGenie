@@ -72,9 +72,15 @@ HomeGenie | Professional
         <label for="service">Password (Optional)</label>
     </div>
     </fieldset>
-    <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+    <div class="d-flex justify-content-center gap-3 mt-2 flex-wrap">
     {% if signin_as=="admin" %}
-    
+    <div class="d-flex flex-column gap-2">
+    <div class="d-flex gap-2 align-items-center mb-2">
+        <span class="fs-5">Average Rating :</span>
+    <div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating fs-3" style="--rating: {{average_rating}}" aria-label="Rating: {{average_rating}} out of 5" ></div></div>{{average_rating}}</div>
+    </div>
+    <button type="button" class="d-flex justify-content-center align-items-center gap-2 btn btn-lg btn-{% if customer.is_banned %}success{% else %}danger{% endif %}" onclick="{% if customer.is_banned %}unbanUser{% else %}banUser{% endif %}(event,'customer',{{customer.id}})" ><i class="bi bi-person-{% if customer.is_banned %}check{% else %}slash{% endif %} fs-4"></i>{% if customer.is_banned %}Unban Customer{% else %}Ban Customer{% endif %}</button>
+    </div>
     {% else %}
     <div class="d-flex gap-4 w-100 justify-content-center">
     <button type="button" class="btn btn-secondary d-none cancel-button" onclick="cancelEditing(event)" >Cancel</button>
@@ -83,13 +89,18 @@ HomeGenie | Professional
     {% endif %}
     </div>
 </form>
+<div id="service_history" class="d-none">
+    <h2 class="h3 my-3 fw-normal text-center">Service History</h2>
+    <div class="history_table_div"></div>
+</div>
 </main>
 {% endif %}
 {% endblock %}
 
 {% block scripts %}
 {% if signin_as=="admin" %}
-
+<script src="/static/js/ban_unban_user.js"></script>
+<script src="/static/js/profile_service_requests.js"></script>
 {% else %}
 <script src="/static/js/edit_profile.js"></script>
 {% endif %}

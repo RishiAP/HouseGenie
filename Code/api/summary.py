@@ -6,7 +6,7 @@ from sqlalchemy import func
 
 class Summary(Resource):
     @check_signin
-    def get(self,signed_in,signin_as,signed_email,signed_id):
+    def get(self,signed_in,signin_as,signed_email,signed_id,is_banned):
         if not signed_in:
             return {'message':'You are not signed in'},401
         if signin_as=="admin":

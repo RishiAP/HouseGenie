@@ -10,7 +10,6 @@ HouseGenie is a Python Flask application designed for managing household service
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Dependencies](#dependencies)
-- [Contributing](#contributing)
 
 ---
 
@@ -75,8 +74,8 @@ HouseGenie is a Python Flask application designed for managing household service
    Professionals can create and update services they provide, and customers can browse and book these services.
 
 4. **Profile Visibility**:
-   - Professional profiles are public.
-   - Customer profiles are private and viewable only by the customer.
+   - Professional profiles are visible to admin and themselves but not by customer.
+   - Customer profiles are are visible to admin and themselves but not by any professional.
 
 ### API Endpoints
 
@@ -89,6 +88,8 @@ Here are some key API endpoints and actions:
 | `/api/service_category` | POST  | Create new service categories (admin only)  |
 | `/api/services`        | GET    | List all available services                 |
 | `/api/services`        | POST   | Add a new service (admin only)              |
+| `/api/search`        | GET   | Get results according to parameters              |
+| `/api/summary`        | GET   | Get summary details according to user              |
 
 ### Dependencies
 
@@ -98,7 +99,3 @@ Here are some key API endpoints and actions:
 - **bcrypt**: For securely hashing and verifying passwords.
 - **python-dotenv**: For managing environment variables in a `.env` file.
 - **pyjwt**: JSON Web Token library for handling JWT-based authentication.
-
-### Contributing
-
-Feel free to open issues or submit pull requests to enhance the project. Contributions to improve features or documentation are welcome!

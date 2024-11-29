@@ -1,9 +1,19 @@
 <main class="container">
-{% if professional.approved==False %}
+{% if not professional.approved %}
 <div class="alert alert-warning mt-3" role="alert">
     <strong>Not Approved!</strong> Your account is not approved by the admin yet. Please wait for the approval.
 </div>
-{% else %}
+{% endif %}
+{% if professional.is_banned %}
+<div class="alert alert-danger mt-3" role="alert">
+    <strong>Banned!</strong> Your account has been banned and can no longer recieve service requests.
+</div>
+{% elif professional.service.is_inactive %}
+<div class="alert alert-warning mt-3" role="alert">
+    <strong>Sorry!</strong> We have closed your service category and you can no longer recieve service requests until its reopened.
+</div>
+{% endif %}
+{% if professional.approved %}
     <h1 class="mt-2">Services Assigned</h1>
     {% include "all_glow_spinners.html" %}
     <div id="requests-alert"></div>

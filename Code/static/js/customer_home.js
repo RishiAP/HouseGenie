@@ -1,13 +1,28 @@
 const bookServiceModal=document.getElementById('bookServiceModal');
-const bootstrapBookServiceModal = new bootstrap.Modal(bookServiceModal,{});
+const bootstrapBookServiceModal = bookServiceModal?new bootstrap.Modal(bookServiceModal,{}):null;
 const reviewModal=document.getElementById('reviewModal');
-const bootstrapReviewModal = new bootstrap.Modal(reviewModal,{});
+const bootstrapReviewModal = reviewModal? new bootstrap.Modal(reviewModal,{}):null;
 window.onload=()=>{
+    const requests_table=document.getElementById('requests');
+    if(!requests_table)
+        return;
     fetch('/api/service_request')
     .then(async (response)=>{
         const res=await response.json();
         if(response.status==200){
-            const requests_table=document.getElementById('requests')
+            const closed=res.service_requests.filter(sr=>sr.service_status=="Closed");
+            const closed_by_professional=res.service_requests.filter(sr=>sr.service_status!="Closed" && sr.date_of_completion!=null && sr.professional!=null);
+            const accepted=res.service_requests.filter(sr=>sr.service_status=="Accepted");
+            const assigned=res.service_requests.filter(sr=>sr.service_status=="Assigned");
+            const requested=res.service_requests.filter(sr=>sr.service_status=="Requested");
+            closed.sort((a,b)=>new Date(b.date_of_request)-new Date(a.date_of_request));
+            closed_by_professional.sort((a,b)=>new Date(b.date_of_request)-new Date(a.date_of_request));
+            accepted.sort((a,b)=>new Date(a.date_of_request)-new Date(b.date_of_request));
+            assigned.sort((a,b)=>new Date(a.date_of_request)-new Date(b.date_of_request));
+            requested.sort((a,b)=>new Date(a.date_of_request)-new Date(b.date_of_request));
+            const rejected=res.service_requests.filter(sr=>sr.service_status=="Rejected");
+            rejected.sort((a,b)=>new Date(a.date_of_request)-new Date(b.date_of_request));
+            res.service_requests=[...requested,...assigned,...accepted,...rejected,...closed_by_professional,...closed];
             innerHTML='';
             for(let i=0;i<res.service_requests.length;i++){
                 innerHTML+=`<tr>
@@ -140,7 +155,7 @@ async function showServices(event,category){
             document.getElementById('lookup-alert').innerHTML='';
             if(res.services.length==0){
                 document.getElementById('lookup-heading').innerHTML=`${res.category.name} Packages`;
-                document.getElementById('lookup-alert').innerHTML='<div class="alert alert-warning" role="alert">No services found. Please try again later.</div>';
+                document.getElementById('lookup-alert').innerHTML='<div class="alert alert-warning" role="alert">No services available right now. Please try again later.</div>';
                 document.getElementById('services').classList.remove('d-none');
             }
             else{

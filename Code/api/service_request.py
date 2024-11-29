@@ -2,6 +2,7 @@ from flask_restful import Resource
 from helpers.auth_decorators import check_signin,admin_required
 from models.ServiceRequest import ServiceRequest, ServiceReview
 from models.Professional import Professional
+from models.Service import Service
 from flask import request
 from sqlalchemy import or_,and_
 from sqlalchemy.exc import IntegrityError
@@ -56,6 +57,11 @@ class BookService(Resource):
             return {'message':'Data must be in JSON format'},400
         if signin_as=="customer":
                 try:
+                    service=Service.query.filter_by(id=id).first()
+                    if service is None:
+                        return {'message':'Service not found'},404
+                    if service.is_inactive:
+                        return {'message':'Service is currently unavailable'},400
                     service_request=ServiceRequest.query.filter(ServiceRequest.service_id==id,ServiceRequest.customer_id==signed_id,ServiceRequest.date_of_service==date_of_service,and_(ServiceRequest.service_status!="Closed",ServiceRequest.service_status!="Rejected")).first()
                     if service_request:
                         return {'message':f'Service request for {service_request.service.name} already exists on {date_of_service.strftime("%d %B, %Y")}. Please choose another date or let it close first.'},400
@@ -167,16 +173,18 @@ class AssignServiceRequest(Resource):
     @admin_required
     def put(self,service_request_id,professional_id):
         try:
-            professional=Professional.query.filter_by(id=professional_id).first()
-            if not professional.approved:
-                return {"message":"Professional isn't approved yet"},403
-            if professional.is_banned:
-                return {"message":"Professional is banned. Cannot assign service request"},403
             service_request=ServiceRequest.query.filter_by(id=service_request_id).with_for_update().first()
             if service_request is None:
                 raise LogicalException("Service request not found",404)
+            if service_request.service.is_inactive:
+                raise LogicalException("Service is currently inactive",400)
             if service_request.service_status!="Requested":
                 raise LogicalException("Service request already assigned",400)
+            professional=Professional.query.filter_by(id=professional_id).first()
+            if not professional.approved:
+                raise LogicalException("Professional is not approved yet",400)
+            if professional.is_banned:
+                raise LogicalException("Professional is banned. Cannot assign service request",403)
             service_request.service_status="Assigned"
             service_request.professional_id=professional_id
             db.session.commit()

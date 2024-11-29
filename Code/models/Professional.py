@@ -20,8 +20,8 @@ class Professional(db.Model):
     def __repr__(self):
         return f"{self.name} - {self.email}"
     
-    def as_private_dict(self):
-        return {
+    def as_private_dict(self,only_professional=False):
+        return {**{
             'id':self.id,
             'email':self.email,
             'name':self.name,
@@ -31,16 +31,14 @@ class Professional(db.Model):
             'approved':self.approved,
             'pincode':self.pincode,
             'created_on':self.created_on.isoformat(timespec='milliseconds') + 'Z',
-            'service':self.service.as_dict()
-        }
+        },**({'service':self.service.as_dict()} if not only_professional else {})}
     
-    def as_public_dict(self):
-        return {
+    def as_public_dict(self,only_professional=False):
+        return {**{
             'id':self.id,
             'name':self.name,
             'address':self.address,
             'phone':self.phone,
             'experience':self.experience,
             'pincode':self.pincode,
-            'service':self.service.as_dict()
-        }
+        },**({'service':self.service.as_dict()} if not only_professional else {})}

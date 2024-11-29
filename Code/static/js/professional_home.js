@@ -1,5 +1,5 @@
 reviewModal=document.getElementById("reviewModal");
-bootstrapReviewModal=new bootstrap.Modal(reviewModal);
+bootstrapReviewModal=reviewModal?new bootstrap.Modal(reviewModal):null;
 async function closeRequest(event,id){
     event.target.disabled=true;
     addLoader(event.target,"Closing...");
@@ -30,6 +30,8 @@ async function closeRequest(event,id){
 }
 
 window.onload=()=>{
+    if(!document.querySelector("#requests"))
+        return;
     fetch('/api/service_request')
     .then(async (response)=>{
         const res=await response.json();
@@ -38,7 +40,15 @@ window.onload=()=>{
             if(!res.approved)
                 return;
             const assigned=res.service_requests.filter((request)=>request.service_status=="Assigned");
-            const history=res.service_requests.filter((request)=>request.service_status!="Assigned");
+            const closed=res.service_requests.filter((request)=>request.service_status=="Closed");
+            const closed_by_professional=res.service_requests.filter((request)=>request.date_of_completion!=null && request.service_status=="Accepted");
+            const accepted=res.service_requests.filter((request)=>request.service_status=="Accepted" && request.date_of_completion==null);
+            const rejected=res.service_requests.filter((request)=>request.service_status=="Rejected");
+            closed.sort((a,b)=>new Date(b.date_of_completion)-new Date(a.date_of_completion));
+            closed_by_professional.sort((a,b)=>new Date(b.date_of_completion)-new Date(a.date_of_completion));
+            accepted.sort((a,b)=>new Date(a.date_of_request)-new Date(b.date_of_request));
+            rejected.sort((a,b)=>new Date(b.date_of_request)-new Date(a.date_of_request));
+            const history=[...closed, ...closed_by_professional, ...accepted, ...rejected];
             for(let i=0;i<assigned.length;i++){
                 innerHTML+=`<tr>
                 <th scope="row">${assigned[i].id}</th>

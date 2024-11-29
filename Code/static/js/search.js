@@ -69,6 +69,11 @@ async function handleSearch(event) {
     const formData = new FormData(event.target);
     const params=new URLSearchParams(formData).toString();
     const search_option=formData.get("search_option");
+    button=event.target.querySelector("button[type='submit']");
+    button.disabled=true;
+    addLoader(button,"Searching...");
+    document.querySelector("table")?.remove();
+    await new Promise(r=>setTimeout(r,500));
     fetch(`/api/search?${params}`, {
         method: 'GET'
     })
@@ -77,6 +82,11 @@ async function handleSearch(event) {
         console.log(res);
         if(response.status==200){
             search_category=formData.get("search_category");
+            if(search_option=="pincode"){
+                const unavailable=res.services.filter(service=>service.is_inactive);
+                const available=res.services.filter(service=>!service.is_inactive);
+                res.services=available.concat(unavailable);
+            }
             if(search_category=="service_request"){
                 if(res.services){
                     if(res.services.length==0){
@@ -201,6 +211,13 @@ async function handleSearch(event) {
             }
         }
     })
+    .catch((err)=>{
+        console.log(err);
+    })
+    .finally(()=>{
+        button.disabled=false;
+        removeLoader(button,"Search");
+    });
 }
 
 function displayServices(services){
@@ -225,7 +242,7 @@ function displayServices(services){
                 <td>${service.description}</td>
                 <td>${service.time_required_minutes}</td>
                 <td>${service.price}</td>
-                <td><button type="button" class="btn btn-primary btn-sm" onclick="chooseDate(event,${service.id})">Book</button></td>
+                <td>${service.is_inactive?"Unavailable":`<button type="button" class="btn btn-primary btn-sm" onclick="chooseDate(event,${service.id})">Book</button>`}</td>
             </tr>`;
         });
         innerHTML+=`</tbody>

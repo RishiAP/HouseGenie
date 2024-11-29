@@ -33,6 +33,14 @@ HomeGenie | Professional
         Profile
         {% endif %}
     </h1>
+    {% if signin_as=="admin" %}
+    <h2 class="h4 fw-normal text-center mb-4">
+        <div class="d-flex gap-2 align-items-center justify-content-center">
+            <span class="fs-5">Average Rating :</span>
+        <div class="avg-rating-with-no gap-2 fs-6"><div class="avg-rating-bg"><div class="avg-rating fs-3" style="--rating: {{average_rating}}" aria-label="Rating: {{average_rating}} out of 5" ></div></div>{{average_rating}}</div>
+        </div>
+    </h2>
+    {% endif %}
     <form>
         <fieldset>
     <div class="row g-2">
@@ -73,14 +81,8 @@ HomeGenie | Professional
     </div>
     </fieldset>
     <div class="d-flex justify-content-center gap-3 mt-2 flex-wrap">
-    {% if signin_as=="admin" %}
-    <div class="d-flex flex-column gap-2">
-    <div class="d-flex gap-2 align-items-center mb-2">
-        <span class="fs-5">Average Rating :</span>
-    <div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating fs-3" style="--rating: {{average_rating}}" aria-label="Rating: {{average_rating}} out of 5" ></div></div>{{average_rating}}</div>
-    </div>
-    <button type="button" class="d-flex justify-content-center align-items-center gap-2 btn btn-lg btn-{% if customer.is_banned %}success{% else %}danger{% endif %}" onclick="{% if customer.is_banned %}unbanUser{% else %}banUser{% endif %}(event,'customer',{{customer.id}})" ><i class="bi bi-person-{% if customer.is_banned %}check{% else %}slash{% endif %} fs-4"></i>{% if customer.is_banned %}Unban Customer{% else %}Ban Customer{% endif %}</button>
-    </div>
+    {% if signin_as=="admin" %}   
+    <button type="button" class="m-auto d-flex justify-content-center align-items-center gap-2 btn btn-lg btn-{% if customer.is_banned %}success{% else %}danger{% endif %}" onclick="{% if customer.is_banned %}unbanUser{% else %}banUser{% endif %}(event,'customer',{{customer.id}})" ><i class="bi bi-person-{% if customer.is_banned %}check{% else %}slash{% endif %} fs-4"></i>{% if customer.is_banned %}Unban Customer{% else %}Ban Customer{% endif %}</button>
     {% else %}
     <div class="d-flex gap-4 w-100 justify-content-center">
     <button type="button" class="btn btn-secondary d-none cancel-button" onclick="cancelEditing(event)" >Cancel</button>

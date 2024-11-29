@@ -4,8 +4,8 @@ from api.signin import Signin
 from api.register import Register
 from functools import wraps
 from api.signout import SignOut
-from api.services import Services,SpecificService
-from api.service_category import ServiceCat
+from api.services import Services,SpecificService, ReactivateService
+from api.service_category import ServiceCat, SpecificCategory
 from models.Service import ServiceCategory, Service
 from models.ServiceRequest import ServiceRequest, ServiceReview
 from models.Professional import Professional
@@ -26,9 +26,10 @@ from api.ban_unban import BanUnban
 def home(signed_in,signin_as,signed_email,signed_id,is_banned):
     if signin_as=="admin":
         categories=ServiceCategory.query.all()
-        services=Service.query.all()
+        services=Service.query.filter_by(is_inactive=False).all()
+        inactive_services=Service.query.filter_by(is_inactive=True).all()
         professionals=Professional.query.filter_by(approved=False).all()
-        return render_template('home.html',page_type="home",signed_in=signed_in,signin_as=signin_as,categories=categories,services=services,professionals=professionals)
+        return render_template('home.html',page_type="home",signed_in=signed_in,signin_as=signin_as,categories=categories,services=services,inactive_services=inactive_services,professionals=professionals)
     elif signin_as=="customer":
         categories=ServiceCategory.query.all()
         return render_template('home.html',page_type="home",signed_in=signed_in,signin_as=signin_as,categories=categories)
@@ -111,7 +112,8 @@ api.add_resource(Register,'/api/register')
 api.add_resource(SignOut,'/api/signout')
 api.add_resource(Services,'/api/services','/api/services/<category>')
 api.add_resource(SpecificService,'/api/service/<int:id>')
-api.add_resource(ServiceCat,'/api/service_category')
+api.add_resource(ServiceCat,'/api/service_category','/api/service_category/<int:id>')
+api.add_resource(SpecificCategory,'/api/category/<int:id>')
 api.add_resource(GetRequests,'/api/service_request')
 api.add_resource(GetSpecificRequest,'/api/service_request/<int:id>')
 api.add_resource(BookService,'/api/service/<int:id>/book','/api/service_request/<int:id>/edit')
@@ -125,6 +127,7 @@ api.add_resource(ProfileHandle,'/api/edit_profile','/api/<user_type>/<int:id>/se
 api.add_resource(Search,'/api/search')
 api.add_resource(Summary,'/api/summary')
 api.add_resource(BanUnban,'/api/<request_type>/<user_type>/<int:id>')
+api.add_resource(ReactivateService,'/api/service/<int:id>/reactivate')
 
 if __name__ == '__main__':
     app.run(debug=True)

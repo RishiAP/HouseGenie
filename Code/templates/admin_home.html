@@ -42,8 +42,8 @@
                 <td>{{ category.description }}</td>
                 <td>
                     <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
-                        <button class="btn btn-primary btn-sm" onclick="editService({{category.id}})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="seleteService({{category.id}})">Delete</button>
+                        <button class="btn btn-primary btn-sm" onclick="openEditCategoryModal(event,{{category.id}})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCategory(event,{{category.id}})">Delete</button>
                     </div>
                 </td>
                 </tr>
@@ -51,11 +51,14 @@
         </tbody>
         </table>
         <div class="d-flex justify-content-end w-100 gap-3">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryAddModal">New Category</button>
+        <button class="btn btn-primary" onclick="showAddCategoryModal(event)">New Category</button>
         </div>
         {% include "admin_services.html" %}
-        <h2>Services</h2>
-        <table class="table table-bordered table-striped" id="services">
+        <h2>Active Services</h2>
+        <div class="alert alert-info {% if services|length!=0 %}d-none{% endif %}" role="alert" id="services-alert">
+            No active services to show
+        </div>
+        <table class="table table-bordered table-striped {% if services|length==0 %}d-none{% endif %}" id="services">
             <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -78,8 +81,8 @@
                     <td>{{service.category.name}}</td>
                     <td>
                         <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
-                            <button class="btn btn-primary btn-sm" onclick="editCategory({{service.id}})">Edit</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteCategory({{service.id}})">Delete</button>
+                            <button class="btn btn-primary btn-sm" onclick="openEditServiceModal(event,{{service.id}})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteService(event,{{service.id}})">Delete</button>
                         </div>
                     </td>
                 </tr>
@@ -87,8 +90,42 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-end w-100 gap-3">
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#serviceAddModal">New Service</button>
+            <button class="btn btn-primary" onclick="openServiceAddModal(event)">New Service</button>
         </div>
+        <h2>Inactive Services</h2>
+        <div class="alert alert-info {% if inactive_services|length!=0 %}d-none{% endif %}" role="alert" id="inactive-services-alert">
+            No inactive services to show
+        </div>
+        <table class="table table-bordered table-striped {% if inactive_services|length==0 %}d-none{% endif %}" id="inactive_services">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Service Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Base Price (₹)</th>
+                    <th scope="col">Time (minutes)</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for service in inactive_services %}
+                <tr>
+                    <th scope="row">{{service.id}}</th>
+                    <td>{{service.name}}</td>
+                    <td>{{service.description}}</td>
+                    <td>{{service.price}}</td>
+                    <td>{{service.time_required_minutes}}</td>
+                    <td>{{service.category.name}}</td>
+                    <td>
+                        <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
+                            <button class="btn btn-success btn-sm" onclick="reactivateService(event,{{service.id}})">Reactivate</button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         <h2>New Professionals</h2>
         {% if professionals|length == 0 %}
         <div class="alert alert-info" role="alert">

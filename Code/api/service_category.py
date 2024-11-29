@@ -25,3 +25,50 @@ class ServiceCat(Resource):
                 return {'message':f'{str(e)} is required'},400
         else:
             return {'message':'The request payload is not in JSON format'},400
+        
+    @admin_required
+    def put(self,id):
+        try:
+            category=ServiceCategory.query.filter_by(id=id).first()
+            if category:
+                if request.is_json:
+                    data = request.get_json()
+                    try:
+                        name, description = data['name'], data['description']
+                        category.name=name
+                        category.description=description
+                        db.session.commit()
+                        return {'message':'Service Category updated successfully','category':category.as_dict()},201
+                    except KeyError as e:
+                        return {'message':f'{str(e)} is required'},400
+                else:
+                    return {'message':'The request payload is not in JSON format'},400
+            else:
+                return {'message':'Service Category not found'},404
+        except Exception as e:
+            db.session.rollback()
+            return {'message':str(e)},500
+        
+    @admin_required
+    def delete(self,id):
+        try:
+            category=ServiceCategory.query.filter_by(id=id).first()
+            if category:
+                if len(category.services)!=0:
+                    return {'message':'Cannot delete category with services'},400
+                db.session.delete(category)
+                db.session.commit()
+                return {'message':'Service Category deleted successfully'},201
+            else:
+                return {'message':'Service Category not found'},404
+        except Exception as e:
+            db.session.rollback()
+            return {'message':str(e)},500
+        
+class SpecificCategory(Resource):
+    def get(self,id):
+        category=ServiceCategory.query.filter_by(id=id).first()
+        if category:
+            return {'message':'Service Category','category':category.as_dict()},200
+        else:
+            return {'message':'Service Category not found'},404

@@ -11,6 +11,7 @@ class Service(db.Model):
     time_required_minutes=db.Column(db.Integer,nullable=False)
     category_id=db.Column(db.Integer,db.ForeignKey('service_categories.id'),nullable=False)
     professional=db.relationship('Professional',backref='service',lazy=True)
+    is_inactive=db.Column(db.Boolean,nullable=False,default=False)
     service_request=db.relationship('ServiceRequest',backref='service',lazy=True)
 
     def as_dict(self):
@@ -21,6 +22,7 @@ class Service(db.Model):
             'price': self.price,
             'time_required_minutes': self.time_required_minutes,
             'category': self.category.as_dict(),
+            'is_inactive': self.is_inactive,
         }
 
 class ServiceCategory(db.Model):

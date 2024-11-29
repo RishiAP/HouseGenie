@@ -45,7 +45,7 @@ class ServiceProfessionals(Resource):
             if service.is_inactive:
                 return {"message":"Cannot assign professionals for inactive services"},403
             professionals=getProfessionalsWithRatingAccepAsssign(Professional.query.filter_by(service_id=service_id,approved=True,is_banned=False)).all()
-            return {"professionals":[{**professional.as_private_dict(only_professional=True),"average_rating":average_rating,"accepted":accepted,"assigned":assigned} for professional,average_rating,accepted,assigned in professionals]}
+            return {"professionals":[{**professional.as_private_dict(only_professional=True),"average_rating":average_rating,"accepted":accepted,"assigned":assigned} for professional,average_rating,accepted,assigned in professionals],"service":service.as_dict()}
         else:
             professionals=Professional.query.filter_by(service_id=service_id).all()
             return {"professionals":[professional.as_private_dict() for professional in professionals]}

@@ -128,8 +128,8 @@ function addCategory(event){
                 <td>${res.category.description}</td>
                 <td>
                 <div class="d-flex justify-content-evenly gap-3 flex-wrap ms-auto" style="max-width:240px">
-                    <button class="btn btn-primary btn-sm" onclick="editCategory('${res.category.id}')">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteCategory('${res.category.id}')">Delete</button>
+                    <button class="btn btn-primary btn-sm" onclick="openEditCategoryModal(event,'${res.category.id}')">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteCategory(event,'${res.category.id}')">Delete</button>
                 </div>
                 </td>
             </tr>`;
@@ -156,6 +156,11 @@ async function chooseProfessionals(event,service_id,service_request_id){
         const res=await response.json();
         if(response.status==200){
             innerHTML=``;
+            if(res.professionals.length==0){
+                showAlert("#window-alert","info","No professionals found for the service.");
+                return;
+            }
+            document.querySelector(".service_request_details").innerHTML=`<h2 class="fw-normal fs-4 text-center"><strong>Service Name : </strong>${res.service.name}</h2>`;
             for(let i=0;i<res.professionals.length;i++){
                 innerHTML+=`<div class="professional-assign-div">
                 <input type="radio" id="professional_${res.professionals[i].id}" name="assigned_professional" value="${res.professionals[i].id}" class="d-none" oninput="dismissAlert('#assign-professional-alert')" >
@@ -417,6 +422,7 @@ async function reactivateService(event,id){
 async function deleteCategory(event,id){
     event.target.disabled=true;
     addLoader(event.target,"Deleting...");
+    dismissAlert("#window-alert");
     await new Promise((r)=>setTimeout(r,500));
     fetch(`/api/service_category/${id}`,{
         method:'DELETE'

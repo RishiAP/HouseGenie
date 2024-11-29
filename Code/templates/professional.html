@@ -2,19 +2,19 @@
 
 {% block title %}
 {% if professional!=none %}
-{{professional.name}} ({{professional.email}}) | Professional | HomeGenie
+{{professional.name}} ({{professional.email}}) | Professional | HouseGenie
 {% else %}
-Professional Not Found | HomeGenie
+Professional Not Found | HouseGenie
 {% endif %}
 {% endblock %}
 
 {% block navbar_title %}
 {% if signin_as=="admin" %}
-HomeGenie | Admin
+HouseGenie | Admin
 {% elif signin_as=="professional" %}
-HomeGenie | Customer
+HouseGenie | Customer
 {% elif signin_as=="professional" %}
-HomeGenie | Professional
+HouseGenie | Professional
 {% endif %}
 {% endblock %}
 

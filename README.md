@@ -17,7 +17,7 @@ HouseGenie is a Python Flask application designed for managing household service
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/rishi-the-programmer/HomeGenie.git
+   git clone https://github.com/rishi-the-programmer/HouseGenie.git
    cd HouseGenie
    ```
 

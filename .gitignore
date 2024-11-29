@@ -10,3 +10,4 @@ venv
 pyvenv.cfg
 *.sqlite3
 uploads/
+index.html

@@ -18,7 +18,7 @@ window.onload=()=>{
                     <tbody>`;
         res.service_requests.forEach(sr=>{
             innerHTML+=`<tr>
-                            <th><a href="service_request/${sr.id}">${sr.id}</a></th>
+                            <th><a href="/service_request/${sr.id}">${sr.id}</a></th>
                             <td>${sr.service.name}</td>
                             <td><div class="d-flex flex-column align-items-center gap-1">${window.location.pathname.includes("professional")?`<a href="/customer/${sr.customer.id}">${sr.customer.name}</a>`:sr.professional?`<a href="/professional/${sr.professional.id}">${sr.professional.name}</a>`:"Not Assigned"}<div class="rating">${window.location.pathname.includes("professional")?(sr.service_review!=null && sr.service_review.customer_rating? getStars(sr.service_review.customer_rating):""):(sr.service_review!=null && sr.service_review.professional_rating? getStars(sr.service_review.professional_rating):"")}</div></div></td>
                             <td>${formatDateTime(sr.date_of_request)}</td>

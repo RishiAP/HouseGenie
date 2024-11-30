@@ -283,6 +283,7 @@ async function openEditServiceModal(event,id){
 }
 
 async function openServiceAddModal(event){
+    await updateCategoryList();
     const addModal=document.getElementById("serviceAddModal");
     const form=addModal.querySelector("form");
     addModal.querySelector(".modal-title").innerHTML="Add Service";
@@ -489,6 +490,7 @@ async function editCategory(event,id){
     addLoader(button,"Editing...");
     const name=document.getElementById('new_category_name').value;
     const description=document.getElementById('new_category_description').value;
+    await updateCategoryList();
     await new Promise((r)=>setTimeout(r,500));
     fetch(`/api/service_category/${id}`,{
         method:'PUT',
@@ -536,4 +538,20 @@ async function showAddCategoryModal(event){
     form.querySelector("button[type='submit']").innerHTML="Add Category";
     form.setAttribute("onsubmit","addCategory(event)");
     categoryAddModal.show();
+}
+
+async function updateCategoryList(){
+    const response=await fetch("/api/service_category");
+    const res=await response.json();
+    if(response.status==200){
+        const categorySelect=document.getElementById("new_service_category");
+        innerHTML="<option selected disabled>Choose Category</option>";
+        for(let i=0;i<res.categories.length;i++){
+            innerHTML+=`<option value="${res.categories[i].id}">${res.categories[i].name}</option>`;
+        }
+        categorySelect.innerHTML=innerHTML;
+    }
+    else{
+        console.log(res.message);
+    }
 }

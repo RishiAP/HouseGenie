@@ -14,7 +14,7 @@ def getProfessionalsWithRatingAccepAsssign(professionalsQuery)->Query:
             func.sum(case((ServiceRequest.service_status == "Accepted", 1), else_=0)).label("accepted_services"),
             func.sum(case((ServiceRequest.service_status == "Assigned", 1), else_=0)).label("assigned_services"),
         )
-        .join(ServiceRequest, ServiceRequest.professional_id == Professional.id)
+        .outerjoin(ServiceRequest, ServiceRequest.professional_id == Professional.id)
         .outerjoin(ServiceReview, ServiceReview.id == ServiceRequest.id)
         .filter(Professional.id.in_(professionalsQuery.with_entities(Professional.id)))
         .group_by(Professional.id)

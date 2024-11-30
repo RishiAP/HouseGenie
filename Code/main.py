@@ -56,10 +56,11 @@ def professional_register():
 @admin_required
 def professional(id):
     professional_info=(db.session.query(Professional,func.avg(ServiceReview.customer_rating).label("average_rating"))
-                .join(ServiceRequest, ServiceRequest.professional_id == Professional.id)
-                .join(ServiceReview, ServiceReview.id == ServiceRequest.id)
+                .outerjoin(ServiceRequest, ServiceRequest.professional_id == Professional.id)
+                .outerjoin(ServiceReview, ServiceReview.id == ServiceRequest.id)
                 .group_by(Professional.id)
                 .filter(Professional.id==id)).first()
+    print(professional_info)
     return render_template('professional.html',professional=professional_info[0],average_rating=professional_info[1],signed_in=True,signin_as="admin"), 404 if professional is None else 200
 
 @app.route('/customer/<int:id>')

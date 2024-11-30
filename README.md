@@ -87,7 +87,7 @@ HouseGenie is a Python Flask application designed for managing household service
 |---------------------------------------------------------------|--------|----------------------------------------|
 | `/api/signin`                                                 | POST   | User login                             |
 | `/api/register`                                               | POST   | User registration                      |
-| `/api/signout`                                                | POST   | User logout                            |
+| `/api/signout`                                                | GET   | User logout                            |
 | `/api/services`                                               | GET    | List all services                      |
 | `/api/services/<category>`                                    | GET    | List services by category              |
 | `/api/service/<int:id>`                                       | GET    | Get service details                    |
@@ -97,20 +97,20 @@ HouseGenie is a Python Flask application designed for managing household service
 | `/api/service_request`                                        | GET    | View service requests                  |
 | `/api/service_request/<int:id>`                               | GET    | View specific service request          |
 | `/api/service/<int:id>/book`                                  | POST   | Book a service                         |
-| `/api/service_request/<int:id>/edit`                          | POST   | Edit a service request                 |
-| `/api/service_request/<int:service_request_id>/assign/<int:professional_id>` | POST   | Assign service request to a professional |
-| `/api/service_request/<int:id>/accept`                        | POST   | Accept a service request               |
-| `/api/service_request/<int:id>/reject`                        | POST   | Reject a service request               |
-| `/api/service_request/<int:id>/close`                         | POST   | Close a service request                |
+| `/api/service_request/<int:id>/edit`                          | PUT   | Edit a service request                 |
+| `/api/service_request/<int:service_request_id>/assign/<int:professional_id>` | PUT   | Assign service request to a professional |
+| `/api/service_request/<int:id>/accept`                        | PUT   | Accept a service request               |
+| `/api/service_request/<int:id>/reject`                        | PUT   | Reject a service request               |
+| `/api/service_request/<int:id>/close`                         | PUT   | Close a service request                |
 | `/api/service_request/<int:id>/rate`                          | POST   | Rate a service request                 |
-| `/api/professional/<int:id>/approve`                          | POST   | Approve professional profile           |
+| `/api/professional/<int:id>/approve`                          | PUT   | Approve professional profile           |
 | `/api/service/<int:service_id>/professionals/<professionalType>` | GET    | List professionals for a service type  |
-| `/api/edit_profile`                                           | POST   | Edit user profile                      |
+| `/api/edit_profile`                                           | PUT   | Edit user profile                      |
 | `/api/<user_type>/<int:id>/service_requests`                   | GET    | View user's service requests           |
 | `/api/search`                                                 | GET    | Search for services or users           |
 | `/api/summary`                                                | GET    | Get platform summary                   |
-| `/api/<request_type>/<user_type>/<int:id>`                     | POST   | Ban or unban a user                    |
-| `/api/service/<int:id>/reactivate`                            | POST   | Reactivate a service                   |
+| `/api/<request_type>/<user_type>/<int:id>`                     | PUT   | Ban or unban a user                    |
+| `/api/service/<int:id>/reactivate`                            | PUT   | Reactivate a service                   |
 
 ### Dependencies
 

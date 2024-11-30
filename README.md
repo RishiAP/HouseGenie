@@ -7,6 +7,7 @@ HouseGenie is a Python Flask application designed for managing household service
 ### Table of Contents
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [ER Diagram](#er-diagram)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Dependencies](#dependencies)
@@ -62,6 +63,9 @@ HouseGenie is a Python Flask application designed for managing household service
 
    Your app should now be running locally at `http://127.0.0.1:5000` or as specified in the terminal output.
 
+### ER Diagram
+![Database ER Diagram](https://res.cloudinary.com/dnxfq38fr/image/upload/v1732920343/HouseGenie_IITM_MADI_Project/mxicfy6fllurad5ganhx.png)
+
 ### Usage
 
 1. **Register as a Professional or Customer**:
@@ -79,17 +83,34 @@ HouseGenie is a Python Flask application designed for managing household service
 
 ### API Endpoints
 
-Here are some key API endpoints and actions:
-
-| Endpoint               | Method | Description                                 |
-|------------------------|--------|---------------------------------------------|
-| `/api/register`        | POST   | Register a new customer or professional     |
-| `/api/login`           | POST   | Login to obtain a JWT token                 |
-| `/api/service_category` | POST  | Create new service categories (admin only)  |
-| `/api/services`        | GET    | List all available services                 |
-| `/api/services`        | POST   | Add a new service (admin only)              |
-| `/api/search`        | GET   | Get results according to parameters              |
-| `/api/summary`        | GET   | Get summary details according to user              |
+| Endpoint                                                      | Method | Description                            |
+|---------------------------------------------------------------|--------|----------------------------------------|
+| `/api/signin`                                                 | POST   | User login                             |
+| `/api/register`                                               | POST   | User registration                      |
+| `/api/signout`                                                | POST   | User logout                            |
+| `/api/services`                                               | GET    | List all services                      |
+| `/api/services/<category>`                                    | GET    | List services by category              |
+| `/api/service/<int:id>`                                       | GET    | Get service details                    |
+| `/api/service_category`                                       | GET    | List service categories                |
+| `/api/service_category/<int:id>`                              | GET    | Get category details                   |
+| `/api/category/<int:id>`                                      | GET    | Get specific category details          |
+| `/api/service_request`                                        | GET    | View service requests                  |
+| `/api/service_request/<int:id>`                               | GET    | View specific service request          |
+| `/api/service/<int:id>/book`                                  | POST   | Book a service                         |
+| `/api/service_request/<int:id>/edit`                          | POST   | Edit a service request                 |
+| `/api/service_request/<int:service_request_id>/assign/<int:professional_id>` | POST   | Assign service request to a professional |
+| `/api/service_request/<int:id>/accept`                        | POST   | Accept a service request               |
+| `/api/service_request/<int:id>/reject`                        | POST   | Reject a service request               |
+| `/api/service_request/<int:id>/close`                         | POST   | Close a service request                |
+| `/api/service_request/<int:id>/rate`                          | POST   | Rate a service request                 |
+| `/api/professional/<int:id>/approve`                          | POST   | Approve professional profile           |
+| `/api/service/<int:service_id>/professionals/<professionalType>` | GET    | List professionals for a service type  |
+| `/api/edit_profile`                                           | POST   | Edit user profile                      |
+| `/api/<user_type>/<int:id>/service_requests`                   | GET    | View user's service requests           |
+| `/api/search`                                                 | GET    | Search for services or users           |
+| `/api/summary`                                                | GET    | Get platform summary                   |
+| `/api/<request_type>/<user_type>/<int:id>`                     | POST   | Ban or unban a user                    |
+| `/api/service/<int:id>/reactivate`                            | POST   | Reactivate a service                   |
 
 ### Dependencies
 

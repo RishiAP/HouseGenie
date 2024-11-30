@@ -21,6 +21,23 @@
     {% include "customer_home.html" %}
 {% elif signin_as=="professional" %}
     {% include "professional_home.html" %}
+{% else %}
+<main class="container my-5">
+    <div class="p-5 text-center bg-body-tertiary rounded-3">
+      <img src="{{ url_for('static', filename='images/housegenie_logo.png') }}" alt="HouseGenie Logo" class="mb-4" height="72">
+      <h1 class="text-body-emphasis">Welcome to HouseGenie</h1>
+      <p class="col-lg-8 mx-auto fs-5 text-muted">
+        Your one-stop solution for all your home service needs. We provide a platform for customers to connect with professionals and get their work done.
+      </p>
+      <div class="d-inline-flex gap-2 mb-5">
+        <a href="/signin" class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
+          Let's Get Started
+          <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+    <img src="{{ url_for('static', filename='images/genie-svgrepo-com.svg') }}" alt="HouseGenie Avatar" class="img-fluid d-block m-auto">
+  </main>
 {% endif %}
 {% endblock %}
 

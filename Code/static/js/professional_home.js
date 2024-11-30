@@ -125,15 +125,18 @@ async function acceptRejectRequest(event,service_request_id,requestType){
         if(response.status==201){
             showAlert("#window-alert","success",res.message);
             row=event.target.parentElement.parentElement.parentElement;
+            row.querySelector("th").innerHTML=`<a href="/service_request/${service_request_id}" target="_blank">${service_request_id}</a>`;
             event.target.parentElement.parentElement.parentElement.remove();
             buttonDiv=row.querySelector(".buttonContainer");
             if(requestType=="accept"){
                 buttonDiv.innerHTML=`<button type="button" class="btn btn-primary btn-sm" onclick="closeRequest(event,${service_request_id},'reject')">Close it</button>`;
                 row.insertCell(6).innerHTML="Pending";
+                row.insertCell(7).innerHTML=`<div class="d-flex justify-content-center">NA</div>`;
             }
             else{
                 buttonDiv.innerHTML="Rejected";
                 row.insertCell(6).innerHTML="Rejected";
+                row.insertCell(7).innerHTML=`<div class="d-flex justify-content-center">NA</div>`;
             }
             historyTable=document.querySelector("#history");
             historyTableBody=historyTable.querySelector("tbody");

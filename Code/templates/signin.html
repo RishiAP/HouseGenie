@@ -3,6 +3,7 @@
 
 {% block main %}
 <main class="form-signin w-100 m-auto">
+  <a href="/"><img class="mb-4 d-block m-auto" src="{{ url_for('static', filename='images/housegenie_logo.png') }}" alt="HouseGenie Logo" height="72"></a>
 <form onsubmit="handleSignin(event)">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     <select name="signin_as" id="signin_as" class="form-select mb-2" required aria-label="Select login role" oninput="dismissAlert('#signin-alert')">

@@ -1,6 +1,6 @@
 const main=document.querySelector('main');
 function showRatings(data,title){
-    Array.from(new Set([1,2,3,4,5]).difference(new Set(Object.keys(data)))).forEach(element => {
+    Array.from(new Set(["1","2","3","4","5"]).difference(new Set(Object.keys(data)))).forEach(element => {
         data[element]=0;
     });
     total=Object.values(data).reduce((a,b)=>a+b);

@@ -12,7 +12,7 @@ window.onload=()=>{
         if(response.status==200){
             const closed=res.service_requests.filter(sr=>sr.service_status=="Closed");
             const closed_by_professional=res.service_requests.filter(sr=>sr.service_status!="Closed" && sr.date_of_completion!=null);
-            const accepted=res.service_requests.filter(sr=>sr.service_status=="Accepted");
+            const accepted=res.service_requests.filter(sr=>sr.service_status=="Accepted" && sr.date_of_completion==null);
             const assigned=res.service_requests.filter(sr=>sr.service_status=="Assigned");
             const requested=res.service_requests.filter(sr=>sr.service_status=="Requested");
             closed.sort((a,b)=>new Date(b.date_of_request)-new Date(a.date_of_request));
@@ -22,7 +22,7 @@ window.onload=()=>{
             requested.sort((a,b)=>new Date(a.date_of_request)-new Date(b.date_of_request));
             const rejected=res.service_requests.filter(sr=>sr.service_status=="Rejected");
             rejected.sort((a,b)=>new Date(a.date_of_request)-new Date(b.date_of_request));
-            res.service_requests=[...requested,...assigned,...accepted,...rejected,...closed_by_professional,...closed];
+            res.service_requests=[...requested,...assigned,...accepted,...closed_by_professional,...rejected,...closed];
             innerHTML='';
             for(let i=0;i<res.service_requests.length;i++){
                 innerHTML+=`<tr>
@@ -251,6 +251,8 @@ async function openRateRequestModal(event,id,rateSeperate=false){
             reviewModal.querySelector('#service_name').value=res.service_request.service.name;
             reviewModal.querySelector('#service_price').value=res.service_request.service.price;
             reviewModal.querySelector('#requested_date').value=formatDateTime(res.service_request.date_of_request);
+            reviewModal.querySelector('#expected_date').value=formatDate(res.service_request.date_of_service);
+            reviewModal.querySelector('#completed_date').value=res.service_request.date_of_completion?formatDateTime(res.service_request.date_of_completion):"Pending";
             reviewModal.querySelector('#rating_to_id').value=res.service_request.professional.id;
             reviewModal.querySelector('#rating_to_name').value=res.service_request.professional.name;
             reviewModal.querySelector('#rating_to_phone').value=res.service_request.professional.phone;
@@ -293,7 +295,7 @@ async function closeRequest(event,id){
                     completed_on_index++;
                 }
                 if(completed_on_index<theads.length){
-                    event.target.parentElement.parentElement.querySelectorAll("td")[completed_on_index-1].innerHTML=formatDateTime(res.date_of_completion);
+                    event.target.parentElement.parentElement.parentElement.querySelectorAll("td")[completed_on_index-1].innerHTML=formatDateTime(res.date_of_completion);
                 }
             }
             event.target.classList.remove('btn-primary');

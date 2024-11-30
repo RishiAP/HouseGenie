@@ -13,8 +13,8 @@ from helpers.commons import searchTypes
 def getProfessionalsWithRating(professionalsQuery)->Query:
     query=(
         db.session.query(Professional,func.avg(ServiceReview.customer_rating).label("average_rating"))
-        .join(ServiceRequest, ServiceRequest.professional_id == Professional.id)
-        .join(ServiceReview, ServiceReview.id == ServiceRequest.id)
+        .outerjoin(ServiceRequest, ServiceRequest.professional_id == Professional.id)
+        .outerjoin(ServiceReview, ServiceReview.id == ServiceRequest.id)
         .filter(Professional.id.in_(professionalsQuery.with_entities(Professional.id)))
         .group_by(Professional.id)
     )
@@ -23,8 +23,8 @@ def getProfessionalsWithRating(professionalsQuery)->Query:
 def getCustomersWithRating(customersQuery)->Query:
     query=(
         db.session.query(Customer,func.avg(ServiceReview.professional_rating).label("average_rating"))
-        .join(ServiceRequest, ServiceRequest.customer_id == Customer.id)
-        .join(ServiceReview, ServiceReview.id == ServiceRequest.id)
+        .outerjoin(ServiceRequest, ServiceRequest.customer_id == Customer.id)
+        .outerjoin(ServiceReview, ServiceReview.id == ServiceRequest.id)
         .filter(Customer.id.in_(customersQuery.with_entities(Customer.id)))
         .group_by(Customer.id)
     )

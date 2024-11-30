@@ -19,7 +19,7 @@ class Summary(Resource):
             return {"status_summary":{status:number for status,number in service_requests}},200
         elif signin_as=="professional":
             ratings=(db.session.query(ServiceReview.customer_rating,func.count(ServiceReview.id))
-            .join(ServiceRequest, ServiceRequest.id == ServiceReview.id)
+            .outerjoin(ServiceRequest, ServiceRequest.id == ServiceReview.id)
             .filter_by(professional_id=signed_id).group_by(ServiceReview.customer_rating)).all()
             service_requests=db.session.query(ServiceRequest.service_status,func.count(ServiceRequest.id)).filter_by(professional_id=signed_id).group_by(ServiceRequest.service_status).all()
             return  {"ratings":{rating:number for rating,number in ratings},"status_summary":{status:number for status,number in service_requests}},200

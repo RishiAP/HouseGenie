@@ -1,20 +1,26 @@
 const main=document.querySelector('main');
 function showRatings(data,title){
+    Array.from(new Set([1,2,3,4,5]).difference(new Set(Object.keys(data)))).forEach(element => {
+        data[element]=0;
+    });
     total=Object.values(data).reduce((a,b)=>a+b);
     sum=0;
     for(let i=1;i<=5;i++){
         sum+=i*(data[i]||0);
     }
+    if (total!=0)
     average=(sum/total).toFixed(1);
     innerHTML=`<div class="card w-100">
   <div class="card-body">
     <h2 class="card-title text-center">${title}</h2>
     <div class="d-flex flex-column gap-3 align-items-center">
-    <div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating fs-3" style="--rating: ${average}" aria-label="Rating: ${average} out of 5" ></div></div>(${average})</div>
+    ${total!=0?
+        `<div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating fs-3" style="--rating: ${average}" aria-label="Rating: ${average} out of 5" ></div></div>(${average})</div>`:""
+    }
     <span class="fs-5">Total Ratings : <strong>${total}</strong></span>
     `;
     for(let i=5;i>0;i--){
-        percent=(((data[i]||0)/total)*100).toFixed(1);
+        percent=total!=0?(((data[i]||0)/total)*100).toFixed(1):0;
         innerHTML+=`<div class="d-flex gap-1 align-items-center w-100"><div class="progress w-100" role="progressbar" aria-label="Warning example" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100" style="height:1.25rem">
         <div class="progress-bar text-bg-warning progress-bar-striped progress-bar-animated fs-6" style="width: ${percent}%;">${percent}%</div>
 </div><span class="d-flex justify-content-between align-items-center" style="min-width:100px"><span class="d-flex rating fs-6">${getOnlyFilledStars(i)}</span><span class="small">(${data[i]||0})</span></div>`;

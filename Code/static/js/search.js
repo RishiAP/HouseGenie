@@ -166,7 +166,9 @@ async function handleSearch(event) {
                         <td>${professional.address}</td>
                         ${search_option!="pincode"?`<td>${professional.pincode}</td>`:""}
                         <td>${professional.service.name}</td>
-                        <td class="small"><div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating" style="--rating: ${professional.average_rating}" aria-label="Rating: ${professional.average_rating} out of 5" ></div></div>(${professional.average_rating})<div></td>
+                        ${professional.average_rating!=null?
+                            `<td class="small"><div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating" style="--rating: ${professional.average_rating}" aria-label="Rating: ${professional.average_rating} out of 5" ></div></div>(${professional.average_rating})<div></td>`:"<td>N/A</td>"
+                        }
                     </tr>`;
                 });
                 innerHTML+=`</tbody>
@@ -201,7 +203,9 @@ async function handleSearch(event) {
                         <td>${customer.phone}</td>
                         <td>${customer.address}</td>
                         ${search_option!="pincode"?`<td>${customer.pincode}</td>`:""}
-                        <td class="small"><div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating" style="--rating: ${customer.average_rating}" aria-label="Rating: ${customer.average_rating} out of 5" ></div></div>(${customer.average_rating})</div></td>
+                        ${customer.average_rating!=null?
+                            `<td class="small"><div class="avg-rating-with-no gap-2"><div class="avg-rating-bg"><div class="avg-rating" style="--rating: ${customer.average_rating}" aria-label="Rating: ${customer.average_rating} out of 5" ></div></div>(${customer.average_rating})</div></td>`:"<td>N/A</td>"
+                        }
                     </tr>`;
                 });
                 innerHTML+=`</tbody>

@@ -40,7 +40,7 @@ def admin_required(fn):
     def wrapper(*args, **kwargs):
         access_token = request.cookies.get(app.config['JWT_ACCESS_COOKIE_NAME'])
         if not access_token:
-            return {'message':'Please sign in'},401
+            return redirect('/signin')
         try:
             current_user = jwt.decode(access_token, app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
             if not current_user or current_user.get('signin_as') != 'admin':
@@ -48,5 +48,5 @@ def admin_required(fn):
             return fn(*args, **kwargs)
         except Exception as e:
             app.logger.error(f"Authentication error: {str(e)}")
-            return {'message':'Please sign in'},401
+            return redirect('/signin')
     return wrapper

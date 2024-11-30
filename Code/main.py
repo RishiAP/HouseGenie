@@ -60,17 +60,20 @@ def professional(id):
                 .outerjoin(ServiceReview, ServiceReview.id == ServiceRequest.id)
                 .group_by(Professional.id)
                 .filter(Professional.id==id)).first()
-    print(professional_info)
+    if professional_info is None:
+        return render_template('professional.html',professional=None,average_rating=None,signed_in=True,signin_as="admin"), 404
     return render_template('professional.html',professional=professional_info[0],average_rating=professional_info[1],signed_in=True,signin_as="admin"), 404 if professional is None else 200
 
 @app.route('/customer/<int:id>')
 @admin_required
 def customer(id):
     customer_info=(db.session.query(Customer,func.avg(ServiceReview.professional_rating).label("average_rating"))
-                .join(ServiceRequest, ServiceRequest.customer_id == Customer.id)
-                .join(ServiceReview, ServiceReview.id == ServiceRequest.id)
+                .outerjoin(ServiceRequest, ServiceRequest.customer_id == Customer.id)
+                .outerjoin(ServiceReview, ServiceReview.id == ServiceRequest.id)
                 .group_by(Customer.id)
                 .filter(Customer.id==id)).first()
+    if customer_info is None:
+        return render_template('customer.html',customer=None,average_rating=None,signed_in=True,signin_as="admin"), 404
     return render_template('customer.html',customer=customer_info[0],average_rating=customer_info[1],signed_in=True,signin_as="admin"), 404 if customer is None else 200
 
 @app.route('/service_request/<int:id>')
@@ -88,8 +91,8 @@ def profile(signed_in,signin_as,signed_email,signed_id,is_banned):
         return render_template('customer.html',signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,customer=customer)
     elif signin_as=="professional":
         professional_info=(db.session.query(Professional,func.avg(ServiceReview.customer_rating).label("average_rating"))
-        .join(ServiceRequest, ServiceRequest.professional_id == Professional.id)
-        .join(ServiceReview, ServiceReview.id == ServiceRequest.id)
+        .outerjoin(ServiceRequest, ServiceRequest.professional_id == Professional.id)
+        .outerjoin(ServiceReview, ServiceReview.id == ServiceRequest.id)
         .group_by(Professional.id)
         .filter(Professional.id==signed_id)).first()
         return render_template('professional.html',signed_in=signed_in,signin_as=signin_as,signed_email=signed_email,professional=professional_info[0],average_rating=professional_info[1])

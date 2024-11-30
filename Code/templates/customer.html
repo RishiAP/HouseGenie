@@ -33,7 +33,7 @@ HouseGenie | Professional
         Profile
         {% endif %}
     </h1>
-    {% if signin_as=="admin" %}
+    {% if signin_as=="admin" and average_rating and average_rating!=0 %}
     <h2 class="h4 fw-normal text-center mb-4">
         <div class="d-flex gap-2 align-items-center justify-content-center">
             <span class="fs-5">Average Rating :</span>

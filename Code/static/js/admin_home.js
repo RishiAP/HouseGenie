@@ -167,7 +167,7 @@ async function chooseProfessionals(event,service_id,service_request_id){
                 <label for="professional_${res.professionals[i].id}" class="professional-label"><div class="d-flex text-body-secondary w-100 align-items-center">
       <div class="mb-0 lh-sm w-100">
         <div class="d-flex gap-3 align-items-center">
-          <strong class="text-gray-dark">${res.professionals[i].name} (${res.professionals[i].email})</strong>${res.professionals[i].average_rating!=0 && `<div class="avg-rating-with-no gap-2 small"><div class="avg-rating-bg"><div class="avg-rating fs-5" style="--rating: ${res.professionals[i].average_rating}" aria-label="Rating: ${res.professionals[i].average_rating} out of 5" ></div></div>${res.professionals[i].average_rating}</div>`}
+          <strong class="text-gray-dark">${res.professionals[i].name} (${res.professionals[i].email})</strong>${res.professionals[i].average_rating!=0 && res.professionals[i].average_rating!=null ? `<div class="avg-rating-with-no gap-2 small"><div class="avg-rating-bg"><div class="avg-rating fs-5" style="--rating: ${res.professionals[i].average_rating}" aria-label="Rating: ${res.professionals[i].average_rating} out of 5" ></div></div>${res.professionals[i].average_rating}</div>`:""}
         </div>
         <span class="d-block small">
                 <strong>Address : </strong>${res.professionals[i].address} - <strong><em>${res.professionals[i].pincode}</em></strong>

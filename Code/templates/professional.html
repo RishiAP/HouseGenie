@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-{% if professional!=none %}
+{% if professional %}
 {{professional.name}} ({{professional.email}}) | Professional | HouseGenie
 {% else %}
 Professional Not Found | HouseGenie
@@ -19,7 +19,7 @@ HouseGenie | Professional
 {% endblock %}
 
 {% block main %}
-{% if professional==None %}
+{% if not professional %}
 <main class="w-100 m-auto" style="max-width:1240px; padding:1rem;">
     <h1 class="h3 mb-3 fw-normal text-center">Professional Not Found</h1>
     <p class="text-center">The professional you are looking for does not exist.</p>
@@ -33,12 +33,14 @@ HouseGenie | Professional
         Profile
         {% endif %}
     </h1>
+    {% if average_rating and average_rating!=0 %}
     <h2 class="h4 fw-normal text-center mb-4">
         <div class="d-flex gap-2 align-items-center justify-content-center">
             <span class="fs-5">Average Rating :</span>
         <div class="avg-rating-with-no gap-2 fs-6"><div class="avg-rating-bg"><div class="avg-rating fs-3" style="--rating: {{average_rating}}" aria-label="Rating: {{average_rating}} out of 5" ></div></div>{{average_rating}}</div>
         </div>
     </h2>
+    {% endif %}
     <form>
         <fieldset>
     <div class="row g-2">

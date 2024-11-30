@@ -11,7 +11,7 @@ window.onload=()=>{
         const res=await response.json();
         if(response.status==200){
             const closed=res.service_requests.filter(sr=>sr.service_status=="Closed");
-            const closed_by_professional=res.service_requests.filter(sr=>sr.service_status!="Closed" && sr.date_of_completion!=null && sr.professional!=null);
+            const closed_by_professional=res.service_requests.filter(sr=>sr.service_status!="Closed" && sr.date_of_completion!=null);
             const accepted=res.service_requests.filter(sr=>sr.service_status=="Accepted");
             const assigned=res.service_requests.filter(sr=>sr.service_status=="Assigned");
             const requested=res.service_requests.filter(sr=>sr.service_status=="Requested");
@@ -124,7 +124,8 @@ async function bookService(event,service_id){
             <button class="btn btn-primary btn-sm" onclick="opeEditModal(event,${res.service_request.id})">Edit</button>
             </div></td>`;
             bootstrapBookServiceModal.hide();
-            document.getElementById('requests').querySelector('tbody').appendChild(row);
+            requestTable=document.getElementById('requests').querySelector('tbody');
+            requestTable.insertBefore(row,requestTable.firstChild);
             showAlert('#window-alert','success',res.message);
             document.getElementById('requests').classList.remove('d-none');
         }

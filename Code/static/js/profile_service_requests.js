@@ -2,6 +2,11 @@ window.onload=()=>{
     fetch(`/api${window.location.pathname}/service_requests`)
     .then(async response=>{
         const res=await response.json();
+        if(res.service_requests.length==0){
+            document.querySelector("#service_history .history_table_div").innerHTML="<h3 class='text-center'>No Service Requests</hjson3>";
+            document.querySelector("#service_history").classList.remove("d-none");
+            return;
+        }
         innerHTML=`<table class='table table-striped table-bordered'>
                     <thead>
                         <tr>

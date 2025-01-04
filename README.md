@@ -55,6 +55,8 @@ HouseGenie is a Python Flask application designed for managing household service
 2. **Configure Database URI**:
    Ensure that the `DATABASE_URL` in `.env` points to your chosen database. For development, SQLite (`sqlite:///housegenie.sqlite3`) is easy to set up, but for deployment, consider a production-grade database (e.g., PostgreSQL, MySQL).
 
+   For DB structure you can refer to the [database_structure.sql](Code/database_structure.sql) file.
+
 3. **Run the Application**:
    Start the Flask development server:
    ```bash
